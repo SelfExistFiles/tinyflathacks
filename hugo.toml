@@ -1,6 +1,6 @@
-baseURL = 'https://example.org/'
-locale = "zh-CN"
-title = 'My New Hugo Site'
+baseURL = 'https://www.tinyflathacks.co.uk/'
+locale = "en-UK"
+title = 'tiny flat hacks'
 theme = "clarity"
 
 [Author]
