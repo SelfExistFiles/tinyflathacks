@@ -1,0 +1,10 @@
+baseURL = 'https://example.org/'
+locale = "zh-CN"
+title = 'My New Hugo Site'
+theme = "clarity"
+
+[Author]
+	name = "你的名字"
+	email = "你的邮箱@example.com"
+
+copyright = "fasjkljsdlfk"
