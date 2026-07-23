@@ -1,5 +1,5 @@
-baseURL = 'https://example.org/'
-locale = "zh-CN"
+baseURL = 'https://www.tinyflathacks.co.uk/'
+locale = "en-GB"
 title = 'My New Hugo Site'
 theme = "clarity"
 
