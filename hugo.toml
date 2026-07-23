@@ -1,6 +1,6 @@
 baseURL = 'https://www.tinyflathacks.co.uk/'
-locale = "zh-CN"
-title = 'tiny flat hacks'
+locale = "en-UK"
+title = 'Tinyflathacks'
 theme = "clarity"
 
 [Author]
