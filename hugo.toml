@@ -1,11 +1,6 @@
 baseURL = 'https://www.tinyflathacks.co.uk/'
-<<<<<<< HEAD
 locale = "en-UK"
 title = 'tiny flat hacks'
-=======
-locale = "en-GB"
-title = 'My New Hugo Site'
->>>>>>> 22f9298a1dd1d12980e9bc816f17bd14b7f8ca87
 theme = "clarity"
 
 [Author]
