@@ -116,4 +116,6 @@ The ideas above are the **only ones** I've actually stuck with for more than a m
 
 ---
 
+![5 Entryway Storage Ideas for Tiny Flats](/douglas-sheppard-CGZbE-Pa1S8-unsplash.jpg)
+
 *This post contains affiliate links. If you buy through these links, I might earn a small commission at no extra cost to you. I only recommend things I actually use or would buy myself.*
