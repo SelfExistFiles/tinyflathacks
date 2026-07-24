@@ -5,6 +5,81 @@
     <link>http://localhost:1313/</link>
     <description>Recent content on Tinyflathacks</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-UK</language><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-UK</language>
+    <lastBuildDate>Thu, 23 Jul 2026 17:48:57 +0800</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>我的第2篇文章</title>
+      <link>http://localhost:1313/posts/%E6%88%91%E7%9A%84%E7%AC%AC%E4%BA%8C%E7%AF%87%E6%96%87%E7%AB%A0/</link>
+      <pubDate>Thu, 23 Jul 2026 13:49:51 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/%E6%88%91%E7%9A%84%E7%AC%AC%E4%BA%8C%E7%AF%87%E6%96%87%E7%AB%A0/</guid>
+      <description>
+        
+          
+            &lt;h1 id=&#34;fsdjfkfsjdl&#34;&gt;fsdjfkfsjdl&lt;/h1&gt;
+&lt;p&gt;我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章
+我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章
+我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章
+我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章我的第2篇文章&lt;/p&gt;
+&lt;h2 id=&#34;fjasdlkfjs附近的开始啦&#34;&gt;fjasdlkfjs附近的开始啦&lt;/h2&gt;
+&lt;p&gt;fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦
+fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>我的第一篇文章</title>
+      <link>http://localhost:1313/posts/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/</link>
+      <pubDate>Thu, 23 Jul 2026 13:49:51 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/</guid>
+      <description>
+        
+          
+            &lt;h1 id=&#34;fsdjfkfsjdl&#34;&gt;fsdjfkfsjdl&lt;/h1&gt;
+&lt;p&gt;我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章
+我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章
+我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章
+我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章我的第一篇文章&lt;/p&gt;
+&lt;h2 id=&#34;fjasdlkfjs附近的开始啦&#34;&gt;fjasdlkfjs附近的开始啦&lt;/h2&gt;
+&lt;p&gt;fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦
+fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦fjasdlkfjs附近的开始啦
+这是我文章的配图：
+&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;漂亮的风景&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/logo.png&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h3 id=&#34;图片显示不出来-卧槽&#34;&gt;图片显示不出来 卧槽&lt;/h3&gt;
+&lt;p&gt;图片的路径如何填充啊&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
   </channel>
 </rss>
