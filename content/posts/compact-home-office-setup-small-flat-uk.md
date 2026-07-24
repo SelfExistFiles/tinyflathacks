@@ -5,10 +5,10 @@ description: "Working from home in a small flat? Here's how to create a producti
 categories: ["Home Office Guides"]
 tags: ["home office", "desk setup", "small flat", "WFH"]
 draft: false
-featured_image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800"
+featured_image: "/photo-1524758631624-e2822e304c36.jpg"
 ---
 
-![Compact home office setup in a small flat](https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800)
+![Compact home office setup in a small flat](/photo-1524758631624-e2822e304c36.jpg)
 
 Working from home is here to stay, but not all of us have a spare room for a dedicated office. The good news? You can create a comfortable, productive workspace in almost any corner of your flat.
 
@@ -29,8 +29,7 @@ Wall-mounted desks, folding desks, and slim console-style desks are all great fo
 
 > 💡 **Pro Tip:** A drop-leaf desk can be folded down when not in use – perfect for studio flats.
 
-{{< button "Browse Small Desks" "https://www.furniturebox.co.uk/desks" >}}
-
+[Browse Small Desks](https://www.furniturebox.co.uk/desks)
 ---
 
 ## 3. Get the Right Chair

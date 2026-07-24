@@ -32,7 +32,7 @@ A round table with a single central pedestal base is a brilliant choice for squa
 ### 3. The Modern Choice: Furniturebox Lexi Dining Table
 For a perfect blend of modern style and compact design, the **Lexi Dining Table** from [Furniturebox](https://www.furniturebox.co.uk/) is a fantastic option. It features a clean, contemporary look that fits seamlessly into a small flat.
 
-{{< button "Check Price at Furniturebox" "https://www.furniturebox.co.uk/lexi-dining-table" >}}
+[Shop Ottoman Beds](https://www.furniturebox.co.uk/beds/ottoman-beds)
 
 **Why we like it:** It's designed with urban living in mind – stylish, durable, and at a price point that's budget-friendly. The simple design helps your space feel open and uncluttered.
 

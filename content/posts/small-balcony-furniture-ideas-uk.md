@@ -5,10 +5,10 @@ description: "Turn your tiny balcony into a relaxing outdoor escape with these s
 categories: ["Outdoor Living"]
 tags: ["balcony", "outdoor furniture", "small space", "UK"]
 draft: false
-featured_image: "https://images.unsplash.com/photo-1560185009-dddeb820c822?w=800"
+featured_image: "/photo-1497366216548-37526070297c.jpg"
 ---
 
-![Cosy small balcony setup](https://images.unsplash.com/photo-1560185009-dddeb820c822?w=800)
+![Cosy small balcony setup](/photo-1497366216548-37526070297c.jpg)
 
 Just because your balcony is small doesn’t mean it can’t be your favourite spot in the flat. With the right furniture, even the tiniest outdoor space can become a relaxing retreat.
 
@@ -21,8 +21,7 @@ A small table + two chairs is a classic for a reason. Choose a foldable set so y
 
 **Why it works:** Cute, practical, and easy to store.
 
-{{< button "Shop Bistro Sets" "https://www.furniturebox.co.uk/garden-furniture/bistro-sets" >}}
-
+[Shop Bistro Sets](https://www.furniturebox.co.uk/garden-furniture/bistro-sets)
 ---
 
 ## 2. Wall-Mounted Shelf Table

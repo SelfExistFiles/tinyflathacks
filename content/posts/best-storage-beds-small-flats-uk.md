@@ -5,10 +5,10 @@ description: "Discover the best storage beds for small UK flats. From ottoman to
 categories: ["Bedroom Guides"]
 tags: ["storage beds", "small bedrooms", "UK", "space-saving"]
 draft: false
-featured_image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800"
+featured_image: "/photo-1505693416388-ac5ce068fe85.jpg"
 ---
 
-![Modern storage bed in a small bedroom](https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800)
+![Modern storage bed in a small bedroom](/photo-1505693416388-ac5ce068fe85.jpg)
 
 If you live in a small flat, your bed takes up a huge chunk of floor space. Why not make that space work harder? A **storage bed** is one of the smartest investments you can make for a compact bedroom.
 
@@ -22,7 +22,7 @@ An ottoman bed lifts up to reveal a massive storage area underneath – perfect 
 **Why it works:** Holds more than any drawer system.  
 **Best for:** Flats with limited wardrobe space.
 
-{{< button "Shop Ottoman Beds" "https://www.furniturebox.co.uk/beds/ottoman-beds" >}}
+[Shop Ottoman Beds](https://www.furniturebox.co.uk/beds/ottoman-beds)
 
 ---
 
