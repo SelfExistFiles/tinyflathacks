@@ -9,13 +9,6 @@
     <lastBuildDate>Fri, 24 Jul 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Bedroom Guides</title>
-      <link>http://localhost:1313/categories/bedroom-guides/</link>
-      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/categories/bedroom-guides/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Furniture Guides</title>
       <link>http://localhost:1313/categories/furniture-guides/</link>
       <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
