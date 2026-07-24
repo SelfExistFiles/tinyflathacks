@@ -4,8 +4,100 @@
     <title>Tags on Tinyflathacks</title>
     <link>http://localhost:1313/tags/</link>
     <description>Recent content in Tags on Tinyflathacks</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-UK</language>
-    <lastBuildDate>Fri, 24 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 24 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Balcony</title>
+      <link>http://localhost:1313/tags/balcony/</link>
+      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/balcony/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Desk Setup</title>
+      <link>http://localhost:1313/tags/desk-setup/</link>
+      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/desk-setup/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Dining Tables</title>
+      <link>http://localhost:1313/tags/dining-tables/</link>
+      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/dining-tables/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Home Office</title>
+      <link>http://localhost:1313/tags/home-office/</link>
+      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/home-office/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Outdoor Furniture</title>
+      <link>http://localhost:1313/tags/outdoor-furniture/</link>
+      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/outdoor-furniture/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Small Bedrooms</title>
+      <link>http://localhost:1313/tags/small-bedrooms/</link>
+      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/small-bedrooms/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Small Flat</title>
+      <link>http://localhost:1313/tags/small-flat/</link>
+      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/small-flat/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Small Flats</title>
+      <link>http://localhost:1313/tags/small-flats/</link>
+      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/small-flats/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Small Space</title>
+      <link>http://localhost:1313/tags/small-space/</link>
+      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/small-space/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Space-Saving</title>
+      <link>http://localhost:1313/tags/space-saving/</link>
+      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/space-saving/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Storage Beds</title>
+      <link>http://localhost:1313/tags/storage-beds/</link>
+      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/storage-beds/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>UK</title>
+      <link>http://localhost:1313/tags/uk/</link>
+      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/uk/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>WFH</title>
+      <link>http://localhost:1313/tags/wfh/</link>
+      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/wfh/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>
