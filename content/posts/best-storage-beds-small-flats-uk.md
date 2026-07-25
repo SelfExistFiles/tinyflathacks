@@ -1,4 +1,4 @@
----
+﻿---
 title: "3 Best Storage Beds for Small Flats in the UK (2026)"
 date: 2026-07-25
 description: "Discover the best storage beds for small UK flats. From ottoman to drawer designs, find the perfect bed to maximise your bedroom space."

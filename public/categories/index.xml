@@ -4,30 +4,8 @@
     <title>Categories on Tinyflathacks</title>
     <link>http://localhost:1313/categories/</link>
     <description>Recent content in Categories on Tinyflathacks</description>
-    <generator>Hugo</generator>
+    <generator>Hugo -- gohugo.io</generator>
     <language>en-UK</language>
-    <lastBuildDate>Fri, 24 Jul 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Furniture Guides</title>
-      <link>http://localhost:1313/categories/furniture-guides/</link>
-      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/categories/furniture-guides/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Home Office Guides</title>
-      <link>http://localhost:1313/categories/home-office-guides/</link>
-      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/categories/home-office-guides/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Outdoor Living</title>
-      <link>http://localhost:1313/categories/outdoor-living/</link>
-      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/categories/outdoor-living/</guid>
-      <description></description>
-    </item>
+    <lastBuildDate>Sat, 25 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

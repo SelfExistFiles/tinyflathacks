@@ -1,11 +1,10 @@
----
+﻿---
 title: "5 Entryway Storage Ideas for Tiny Flats"
 date: 2026-07-25
 description: "Entryway too small for furniture? Here are 5 actually practical storage ideas for tiny flats that won't crowd your hallway."
 categories: ["Storage Ideas"]
 tags: ["entryway", "hallway", "small flat", "storage hacks", "UK"]
 draft: false
-featured_image: "/douglas-sheppard-CGZbE-Pa1S8-unsplash.jpg"
 ---
 
 Okay, let's be honest – when your flat is tiny, the entryway is usually the last place you think about. You just want somewhere to dump your keys and kick off your shoes, right?
@@ -28,7 +27,7 @@ I got a simple wooden shelf with 3 hooks underneath from IKEA (the TJUSIG series
 
 **Why it works:** Zero floor space taken up. It's all on the wall.
 
-> **[Check out wall hooks on Amazon →](https://www.amazon.co.uk/s?k=wall+mounted+hooks+coat)**
+[Check out wall hooks on Amazon →](https://www.amazon.co.uk/s?k=wall+mounted+hooks+coat)
 
 ---
 
@@ -45,7 +44,7 @@ Then I found this narrow wooden bench that's only about 35cm deep. It fits perfe
 
 **Pro tip:** Measure the depth of your entryway *before* you buy anything. I learned this the hard way – bought something that was too deep and ended up returning it.
 
-**[Browse storage benches on Furniturebox →](https://www.furniturebox.co.uk/benches)**
+[Browse storage benches on Furniturebox →](https://www.furniturebox.co.uk/benches)
 
 ---
 
@@ -63,7 +62,7 @@ Over-door shoe organisers aren't just for shoes. I use one with clear pockets on
 
 The best part? It costs like £5 and takes 2 minutes to hang. No tools needed. Perfect for rental flats where you can't make permanent changes.
 
-**[Find over-door organisers on Amazon →](https://www.amazon.co.uk/s?k=over+door+organiser)**
+[Find over-door organisers on Amazon →](https://www.amazon.co.uk/s?k=over+door+organiser)
 
 ---
 
@@ -78,7 +77,7 @@ There are these clever mirrors that fold out to reveal hidden hooks or a small c
 - Hides mess instantly when you close it
 - Great for small spaces because it serves two purposes
 
-**[Shop storage mirrors →](https://www.amazon.co.uk/s?k=storage+mirror+hallway)**
+[Shop storage mirrors →](https://www.amazon.co.uk/s?k=storage+mirror+hallway)
 
 ---
 
@@ -92,7 +91,7 @@ I use two woven baskets – one for shoes, one for things that need to go out (l
 
 **My tip:** Get baskets with lids if your entryway is visible from your living area – it's much tidier that way.
 
-**[See storage baskets on Amazon →](https://www.amazon.co.uk/s?k=storage+baskets)**
+[See storage baskets on Amazon →](https://www.amazon.co.uk/s?k=storage+baskets)
 
 ---
 
@@ -115,7 +114,5 @@ The ideas above are the **only ones** I've actually stuck with for more than a m
 | Neat floor baskets | £10-30 | Very low | Small |
 
 ---
-
-![5 Entryway Storage Ideas for Tiny Flats](/douglas-sheppard-CGZbE-Pa1S8-unsplash.jpg)
 
 *This post contains affiliate links. If you buy through these links, I might earn a small commission at no extra cost to you. I only recommend things I actually use or would buy myself.*
