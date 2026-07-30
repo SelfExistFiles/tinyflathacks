@@ -7,4 +7,7 @@ theme = "clarity"
 	name = "你的名字"
 	email = "你的邮箱@example.com"
 
+[params]
+  	description = "Tiny Flat Hacks – Smart storage and space-saving ideas for small apartments in the UK." # 这是全站默认的 description
+
 copyright = "fasjkljsdlfk"
