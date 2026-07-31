@@ -6,6 +6,7 @@ categories: ["Bedroom Guides"]
 tags: ["storage beds", "small bedrooms", "UK", "space-saving"]
 draft: false
 featured_image: "/photo-1505693416388-ac5ce068fe85.jpg"
+thumbnail: "/photo-1505693416388-ac5ce068fe85.jpg"
 ---
 
 ![Modern storage bed in a small bedroom](/photo-1505693416388-ac5ce068fe85.jpg)

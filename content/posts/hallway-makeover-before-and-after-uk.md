@@ -6,6 +6,7 @@ categories: ["Room Makeovers", "Storage Ideas"]
 tags: ["hallway", "entryway", "before and after", "foldable furniture", "UK"]
 draft: false
 featured_image: "/image_818002850977418.webp"
+thumbnail: "/image_818002850977418.webp"
 ---
 
 Let me show you something embarrassing.

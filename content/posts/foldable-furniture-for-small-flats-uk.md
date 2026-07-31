@@ -6,6 +6,7 @@ categories: ["Furniture Guides"]
 tags: ["foldable furniture", "small flat", "space saving", "UK", "practical"]
 draft: false
 featured_image: "/photo-1554415707-6e8cfc93fe23.jpg"
+thumbnail: "/photo-1554415707-6e8cfc93fe23.jpg"
 ---
 
 I'll be honest – I used to think foldable furniture was proper naff. You know, the kind of thing your nan keeps in the shed for when the family descends at Christmas. Not something you'd actually *want* in your living space.

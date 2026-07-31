@@ -6,6 +6,7 @@ categories: ["Home Office Guides"]
 tags: ["home office", "desk setup", "small flat", "WFH"]
 draft: false
 featured_image: "/photo-1524758631624-e2822e304c36.jpg"
+thumbnail: "/photo-1524758631624-e2822e304c36.jpg"
 ---
 
 ![Compact home office setup in a small flat](/photo-1524758631624-e2822e304c36.jpg)

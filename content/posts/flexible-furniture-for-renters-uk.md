@@ -6,6 +6,7 @@ categories: ["Furniture Guides", "Renter Advice"]
 tags: ["flexible furniture", "rental flat", "small space", "UK", "renter friendly"]
 draft: false
 featured_image: "/photo-1555041469-a586c61ea9bc.jpg"
+thumbnail: "/photo-1555041469-a586c61ea9bc.jpg"
 ---
 
 When you're renting in the UK, you learn pretty quickly that furniture is a pain.

@@ -6,6 +6,7 @@ categories: ["Outdoor Living"]
 tags: ["balcony", "outdoor furniture", "small space", "UK"]
 draft: false
 featured_image: "/photo-1497366216548-37526070297c.jpg"
+thumbnail: "/photo-1497366216548-37526070297c.jpg"
 ---
 
 ![Cosy small balcony setup](/photo-1497366216548-37526070297c.jpg)

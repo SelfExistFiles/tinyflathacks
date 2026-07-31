@@ -6,6 +6,7 @@ categories: ["Furniture Guides"]
 tags: ["foldable furniture", "small flat", "space saving", "UK", "practical"]
 draft: false
 featured_image: "/feature_image_foldable_furniture.jpg"
+thumbnail: "/feature_image_foldable_furniture.jpg"
 ---
 
 I'll be straight with you – I used to proper judge anyone who had foldable furniture in their actual home. In my head, it was for camping, student halls, or your mate's spare room that nobody uses.
