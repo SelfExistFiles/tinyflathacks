@@ -5,8 +5,8 @@ description: "I used to think foldable furniture was a gimmick. Then I moved int
 categories: ["Furniture Guides"]
 tags: ["foldable furniture", "small flat", "space saving", "UK", "practical"]
 draft: false
-featured_image: "/feature_image_foldable_furniture.jpg"
-thumbnail: "/feature_image_foldable_furniture.jpg"
+featured_image: "/feature_image_foldable_furniture.webp"
+thumbnail: "/feature_image_foldable_furniture.webp"
 ---
 
 I'll be straight with you – I used to proper judge anyone who had foldable furniture in their actual home. In my head, it was for camping, student halls, or your mate's spare room that nobody uses.
@@ -19,7 +19,7 @@ This isn't a list of fancy designer pieces. This is the stuff I actually bought,
 
 ## 1. The Wall Desk That Unfolds in Two Seconds
 
-![Wall-mounted drop-leaf desk in a small flat](/Wall-mounted-drop-leaf-desk-in-a-small-fla.jpg)
+![Wall-mounted drop-leaf desk in a small flat](/Wall-mounted-drop-leaf-desk-in-a-small-fla.webp)
 
 Before I got this, I worked from my kitchen counter. Which meant every day at 5pm I had to clear away my laptop, a notepad, three pens, and a cold cup of tea before I could even think about cooking. Proper faff.
 
