@@ -1,7 +1,6 @@
 ---
 title: "IKEA vs Furniturebox: Which One's Actually Better for a Tiny Flat?"
-date: 2026-07-31
-publishDate: 2026-08-01
+date: 2026-08-01
 description: "I've bought furniture from both IKEA and Furniturebox for my small flat. Here's my honest comparison – including what I kept, what I returned, and what I'd buy again."
 categories: ["Furniture Guides", "Brand Comparisons"]
 tags: ["IKEA", "Furniturebox", "comparison", "small flat", "UK", "honest review"]

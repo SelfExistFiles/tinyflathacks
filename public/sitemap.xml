@@ -2,6 +2,45 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/categories/brand-comparisons/</loc>
+    <lastmod>2026-08-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/</loc>
+    <lastmod>2026-08-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/comparison/</loc>
+    <lastmod>2026-08-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/furniture-guides/</loc>
+    <lastmod>2026-08-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/furniturebox/</loc>
+    <lastmod>2026-08-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/honest-review/</loc>
+    <lastmod>2026-08-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/ikea/</loc>
+    <lastmod>2026-08-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/ikea-vs-furniturebox-for-small-flats-uk/</loc>
+    <lastmod>2026-08-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2026-08-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/small-flat/</loc>
+    <lastmod>2026-08-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2026-08-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2026-08-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/uk/</loc>
+    <lastmod>2026-08-01T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/categories/bedroom-guides/</loc>
     <lastmod>2026-07-31T00:00:00+00:00</lastmod>
   </url><url>
@@ -11,31 +50,16 @@
     <loc>http://localhost:1313/tags/before-and-after/</loc>
     <lastmod>2026-07-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
-    <lastmod>2026-07-31T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/tags/foldable-furniture/</loc>
     <lastmod>2026-07-31T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/bedroom-makeover-before-and-after-uk/</loc>
     <lastmod>2026-07-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/</loc>
-    <lastmod>2026-07-31T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/categories/room-makeovers/</loc>
     <lastmod>2026-07-31T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/small-bedroom/</loc>
-    <lastmod>2026-07-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2026-07-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/</loc>
-    <lastmod>2026-07-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/uk/</loc>
     <lastmod>2026-07-31T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/entryway/</loc>
@@ -56,9 +80,6 @@
     <loc>http://localhost:1313/posts/flexible-furniture-for-renters-uk/</loc>
     <lastmod>2026-07-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/furniture-guides/</loc>
-    <lastmod>2026-07-29T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/tags/rental-flat/</loc>
     <lastmod>2026-07-29T00:00:00+00:00</lastmod>
   </url><url>
@@ -75,9 +96,6 @@
     <lastmod>2026-07-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/practical/</loc>
-    <lastmod>2026-07-28T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/small-flat/</loc>
     <lastmod>2026-07-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/space-saving/</loc>
