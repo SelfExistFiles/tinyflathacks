@@ -2,6 +2,39 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/categories/</loc>
+    <lastmod>2026-08-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/foldable-furniture/</loc>
+    <lastmod>2026-08-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/how-i-reclaimed-4-square-metres-in-my-tiny-london-studio-with-foldable-furniture/</loc>
+    <lastmod>2026-08-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/london-renting/</loc>
+    <lastmod>2026-08-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2026-08-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/small-space/</loc>
+    <lastmod>2026-08-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/space-saving/</loc>
+    <lastmod>2026-08-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/studio-flat/</loc>
+    <lastmod>2026-08-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2026-08-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2026-08-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/uk/</loc>
+    <lastmod>2026-08-05T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/tags/air-purifier/</loc>
     <lastmod>2026-08-04T00:00:00+00:00</lastmod>
   </url><url>
@@ -12,12 +45,6 @@
     <lastmod>2026-08-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/balcony-makeover/</loc>
-    <lastmod>2026-08-04T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/</loc>
-    <lastmod>2026-08-04T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/foldable-furniture/</loc>
     <lastmod>2026-08-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/health/</loc>
@@ -38,22 +65,10 @@
     <loc>http://localhost:1313/tags/outdoor-space/</loc>
     <lastmod>2026-08-04T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/</loc>
-    <lastmod>2026-08-04T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/categories/room-makeovers/</loc>
     <lastmod>2026-08-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/small-flat/</loc>
-    <lastmod>2026-08-04T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2026-08-04T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/</loc>
-    <lastmod>2026-08-04T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/uk/</loc>
     <lastmod>2026-08-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/ventilation/</loc>
@@ -147,9 +162,6 @@
     <lastmod>2026-07-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/renter-friendly/</loc>
-    <lastmod>2026-07-29T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/small-space/</loc>
     <lastmod>2026-07-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/foldable-furniture-i-actually-use-in-my-tiny-flat/</loc>
