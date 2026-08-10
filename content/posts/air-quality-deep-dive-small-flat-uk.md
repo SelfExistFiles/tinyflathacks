@@ -52,7 +52,7 @@ I didn't realise all of this was connected until I started measuring.
 
 I didn't just buy one thing and hope for the best. I approached it like a mini project. Each change solved a specific problem.
 
-![Clean room with air purifier and clear window](/image_873475557800810.webp)
+![Clean room with air purifier and clear window](/image_480044155575938.webp)
 
 Here's the exact setup I ended up with, and why each piece matters.
 
