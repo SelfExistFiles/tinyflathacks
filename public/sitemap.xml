@@ -2,6 +2,33 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/tags/alcove-hacks/</loc>
+    <lastmod>2026-08-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/foldable-furniture/</loc>
+    <lastmod>2026-08-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/london-studio-flat-alcove-bed-foldable-dining-makeover-uk/</loc>
+    <lastmod>2026-08-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/london-studio/</loc>
+    <lastmod>2026-08-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2026-08-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/small-flat/</loc>
+    <lastmod>2026-08-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2026-08-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2026-08-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/uk-rental/</loc>
+    <lastmod>2026-08-15T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/tags/before-and-after/</loc>
     <lastmod>2026-08-13T00:00:00+00:00</lastmod>
   </url><url>
@@ -20,19 +47,7 @@
     <loc>http://localhost:1313/posts/living-room-multi-function-makeover-uk/</loc>
     <lastmod>2026-08-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/</loc>
-    <lastmod>2026-08-13T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/categories/room-makeovers/</loc>
-    <lastmod>2026-08-13T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/small-flat/</loc>
-    <lastmod>2026-08-13T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2026-08-13T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/</loc>
     <lastmod>2026-08-13T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/uk/</loc>
@@ -94,9 +109,6 @@
   </url><url>
     <loc>http://localhost:1313/tags/uk-flats/</loc>
     <lastmod>2026-08-08T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/foldable-furniture/</loc>
-    <lastmod>2026-08-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/how-i-reclaimed-4-square-metres-in-my-tiny-london-studio-with-foldable-furniture/</loc>
     <lastmod>2026-08-05T00:00:00+00:00</lastmod>
