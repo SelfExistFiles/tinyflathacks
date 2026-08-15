@@ -2,6 +2,7 @@ import os
 import sys
 import datetime
 import random
+import re
 import requests
 from google import genai
 
@@ -28,6 +29,18 @@ topics = [
         "image_keywords": ["small+living+room+design", "multi+functional+furniture", "compact+living+room", "small+apartment+living+room"]
     }
 ]
+
+def slugify(title):
+    """将标题转换为适合文件名的 slug"""
+    # 转小写，移除特殊字符，空格替换为短横线
+    slug = title.lower()
+    slug = re.sub(r'[^\w\s-]', '', slug)  # 移除标点符号
+    slug = re.sub(r'[-\s]+', '-', slug)   # 空格和连续短横线替换为单个短横线
+    slug = slug.strip('-')
+    # 截断过长的 slug（保留前 60 个字符）
+    if len(slug) > 60:
+        slug = slug[:60].rstrip('-')
+    return slug
 
 def get_unsplash_thumbnail(query_keywords):
     """从 Unsplash 获取与主题匹配的图片"""
@@ -80,7 +93,13 @@ def generate_and_save():
     7. 要有具体的数字（如房间尺寸、花费金额、时间）
 
     **内容结构要求：**
-    1. Front Matter（YAML 格式）包含：title, date（设为今天）, description（一句话概括）, categories, tags, draft: false
+    1. Front Matter（YAML 格式）包含：
+       - title:（必须是一个有吸引力、口语化、带点好奇心的标题，像一个真实博主会写的，比如 "How We Finally Fixed Our Tiny Bathroom (Without Breaking Anything)" 或 "The £200 Hallway Hack That Changed Everything"）
+       - date（设为今天）
+       - description（一句话概括，吸引人点击）
+       - categories
+       - tags
+       - draft: false
     2. 引言：点出问题，让读者产生共鸣
     3. "Before" 部分：描述改造前的糟糕状态（具体细节）
     4. "The Plan" 或 "What We Changed"：列出具体改动
@@ -98,16 +117,24 @@ def generate_and_save():
         contents=prompt
     )
 
-    # 保存文章
+    full_content = response.text
     today = datetime.date.today().strftime("%Y-%m-%d")
-    filename = f"content/posts/{today}-{chosen['title']}.md"
     
+    # ---- 从文章中提取 title 来生成文件名 ----
+    title_match = re.search(r'^title:\s*"(.+?)"', full_content, re.MULTILINE)
+    if title_match:
+        raw_title = title_match.group(1)
+        file_slug = slugify(raw_title)
+        filename = f"content/posts/{today}-{file_slug}.md"
+        print(f"📝 提取到标题: {raw_title}")
+    else:
+        # fallback：如果提取不到标题，用原来的命名方式
+        filename = f"content/posts/{today}-{chosen['title']}.md"
+        print("⚠️ 警告：未能从文章中提取标题，使用默认文件名")
+
     os.makedirs(os.path.dirname(filename), exist_ok=True)
     
     # 在文章开头插入图片引用
-    full_content = response.text
-    
-    # 如果文章已有 Front Matter，在其中插入 thumbnail
     if full_content.startswith("---"):
         parts = full_content.split("---", 2)
         if len(parts) >= 3:
