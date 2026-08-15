@@ -129,7 +129,7 @@ def generate_and_save():
         print(f"📝 提取到标题: {raw_title}")
     else:
         # fallback：如果提取不到标题，用原来的命名方式
-        filename = f"content/posts/{today}-{chosen['title']}.md"
+        filename = f"content/posts/{chosen['title']}.md"
         print("⚠️ 警告：未能从文章中提取标题，使用默认文件名")
 
     os.makedirs(os.path.dirname(filename), exist_ok=True)
