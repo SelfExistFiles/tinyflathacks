@@ -125,7 +125,7 @@ def generate_and_save():
     if title_match:
         raw_title = title_match.group(1)
         file_slug = slugify(raw_title)
-        filename = f"content/posts/{today}-{file_slug}.md"
+        filename = f"content/posts/{file_slug}.md"
         print(f"📝 提取到标题: {raw_title}")
     else:
         # fallback：如果提取不到标题，用原来的命名方式
