@@ -94,7 +94,7 @@ def generate_and_save():
 
     print(f"正在生成文章: {chosen['title']} ...")
     response = client.models.generate_content(
-        model='gemini-2.5-flash',
+        model='gemini-3.1-flash-lite',
         contents=prompt
     )
 
