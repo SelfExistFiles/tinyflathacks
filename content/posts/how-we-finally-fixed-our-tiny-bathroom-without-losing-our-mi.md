@@ -1,6 +1,6 @@
 ---
 title: "How We Finally Fixed Our Tiny Bathroom (Without Losing Our Minds)"
-date: 2024-05-22
+date: 2026-08-16
 description: "Our bathroom was a shoebox disaster until we decided to do something about it. Here is how we gained actual storage without a total overhaul."
 categories:
   - Home Improvement
