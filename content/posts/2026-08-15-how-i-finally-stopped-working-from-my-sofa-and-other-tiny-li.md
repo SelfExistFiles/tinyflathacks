@@ -6,7 +6,8 @@ categories: ["Living Room Hacks"]
 tags: ["small space living", "zoning", "DIY", "tiny flat hacks"]
 draft: false
 
-thumbnail: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"---
+thumbnail: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
+---
 
 I’ll be honest with you: living in a small flat is basically a never-ending game of Tetris, except the blocks are your belongings and the stakes involve losing your sanity. 
 
