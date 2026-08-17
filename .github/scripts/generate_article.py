@@ -30,21 +30,10 @@ topics = [
     }
 ]
 
-def slugify(title):
-    """将标题转换为适合文件名的 slug"""
-    slug = title.lower()
-    slug = re.sub(r'[^\w\s-]', '', slug)
-    slug = re.sub(r'[-\s]+', '-', slug)
-    slug = slug.strip('-')
-    if len(slug) > 60:
-        slug = slug[:60].rstrip('-')
-    return slug
-
 def get_unsplash_thumbnail(query_keywords):
     """从 Unsplash 获取与主题匹配的图片"""
     api_key = os.getenv("UNSPLASH_API_KEY")
     if not api_key:
-        print("⚠️ 未设置 UNSPLASH_API_KEY，使用默认图片")
         return "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
     
     keyword = random.choice(query_keywords)
@@ -55,97 +44,125 @@ def get_unsplash_thumbnail(query_keywords):
         if response.status_code == 200:
             return response.json()["urls"]["regular"]
         else:
-            print(f"⚠️ Unsplash API 返回状态码 {response.status_code}，使用默认图片")
             return "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
-    except Exception as e:
-        print(f"⚠️ Unsplash 请求失败: {e}，使用默认图片")
+    except:
         return "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
 
-def clean_front_matter(content):
+def force_fix_front_matter(content):
     """
-    清理 AI 生成的 Markdown，确保 Front Matter 格式正确
-    1. 找到第一个 --- 和第二个 --- 之间的内容作为 YAML
-    2. 如果在 YAML 内或之后有孤立的 ---，移除或替换
-    3. 确保 YAML 中的字符串不包含未转义的冒号和特殊字符
+    强制修复 Front Matter - 无论 AI 生成什么格式，都强行提取 title 并重建
     """
-    lines = content.splitlines()
-    front_matter_lines = []
-    body_lines = []
-    in_front_matter = False
-    front_matter_count = 0
+    lines = content.split('\n')
     
-    for line in lines:
-        stripped = line.strip()
-        
-        # 处理 YAML 分隔符
-        if stripped == '---':
-            front_matter_count += 1
-            if front_matter_count == 1:
-                # 第一次遇到 ---：开始 Front Matter
-                in_front_matter = True
-                front_matter_lines.append(line)
-                continue
-            elif front_matter_count == 2:
-                # 第二次遇到 ---：结束 Front Matter
-                in_front_matter = False
-                front_matter_lines.append(line)
-                continue
-        
-        # 分类行
-        if in_front_matter:
-            front_matter_lines.append(line)
-        else:
-            # 正文里孤立的 '---' 替换掉
-            if stripped == '---':
-                body_lines.append('"—"')
-            else:
-                body_lines.append(line)
+    # 1. 尝试提取 title
+    title = None
+    for line in lines[:30]:  # 只在前30行找
+        match = re.search(r'^title:\s*["\']?(.+?)["\']?$', line.strip())
+        if match:
+            title = match.group(1).strip()
+            break
     
-    # 如果 Front Matter 没有正确闭合，强制补一个
-    if front_matter_count < 2:
-        print("⚠️ 检测到 Front Matter 未闭合，自动补全")
-        front_matter_lines.append('---')
-        front_matter_count += 1
+    # 如果没找到 title，用默认值
+    if not title:
+        title = "Tiny Flat Hack - Storage Solution"
+        print("⚠️ 未找到 title，使用默认值")
     
-    # 如果完全没有找到 Front Matter（可能 AI 没生成），手动创建一个
-    if front_matter_count == 0:
-        print("⚠️ 未检测到 Front Matter，手动创建")
-        today = datetime.date.today().strftime("%Y-%m-%d")
-        front_matter_lines = [
-            '---',
-            f'title: "未命名文章"',
-            f'date: {today}',
-            'description: "自动生成的文章"',
-            'categories:',
-            '  - "未分类"',
-            'tags:',
-            '  - "自动生成"',
-            'draft: false',
-            '---'
-        ]
-        # 把原内容作为正文
-        body_lines = content.splitlines()
+    # 2. 尝试提取 description
+    description = None
+    for line in lines[:30]:
+        match = re.search(r'^description:\s*["\']?(.+?)["\']?$', line.strip())
+        if match:
+            description = match.group(1).strip()
+            break
     
-    cleaned = '\n'.join(front_matter_lines + body_lines)
-    return cleaned
+    if not description:
+        description = f"Tips and ideas for {title.lower()}"
+    
+    # 3. 尝试提取 categories
+    categories = ["DIY", "Home Improvement"]
+    for i, line in enumerate(lines[:30]):
+        if 'categories:' in line:
+            # 看下一行有没有列表项
+            if i + 1 < len(lines) and lines[i+1].strip().startswith('-'):
+                cats = []
+                for j in range(i+1, min(i+6, len(lines))):
+                    if lines[j].strip().startswith('-'):
+                        cats.append(lines[j].strip()[1:].strip().strip('"'))
+                    else:
+                        break
+                if cats:
+                    categories = cats
+            break
+    
+    # 4. 尝试提取 tags
+    tags = ["small-space", "organization", "storage"]
+    for i, line in enumerate(lines[:30]):
+        if 'tags:' in line:
+            if i + 1 < len(lines) and lines[i+1].strip().startswith('-'):
+                tag_list = []
+                for j in range(i+1, min(i+6, len(lines))):
+                    if lines[j].strip().startswith('-'):
+                        tag_list.append(lines[j].strip()[1:].strip().strip('"'))
+                    else:
+                        break
+                if tag_list:
+                    tags = tag_list
+            break
+    
+    # 5. 提取正文（跳过前面的 Front Matter 部分）
+    body_start = 0
+    dash_count = 0
+    for i, line in enumerate(lines):
+        if line.strip() == '---':
+            dash_count += 1
+            if dash_count == 2:
+                body_start = i + 1
+                break
+    
+    # 如果找不到第二个 ---，从第一个 --- 后面找
+    if body_start == 0:
+        for i, line in enumerate(lines):
+            if line.strip() == '---':
+                body_start = i + 1
+                break
+    
+    # 如果还是找不到，从头开始
+    if body_start == 0 or body_start >= len(lines):
+        body_start = 0
+    
+    body_lines = lines[body_start:]
+    # 移除正文中可能存在的孤立 ---
+    body_lines = [line if line.strip() != '---' else '--- (separator)' for line in body_lines]
+    
+    # 6. 重建干净的 Front Matter
+    today = datetime.date.today().strftime("%Y-%m-%d")
+    clean_front_matter = f"""---
+title: "{title}"
+date: {today}
+description: "{description}"
+categories:
+{chr(10).join(['  - "' + c.strip('"') + '"' for c in categories])}
+tags:
+{chr(10).join(['  - "' + t.strip('"') + '"' for t in tags])}
+draft: false
+thumbnail: "{get_unsplash_thumbnail(['home', 'interior'])}"
+---"""
+    
+    # 7. 组装最终内容
+    final_content = clean_front_matter + '\n' + '\n'.join(body_lines)
+    return final_content, title
 
 def generate_and_save():
-    """主生成函数"""
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         print("❌ 错误: 未找到 GEMINI_API_KEY 环境变量")
-        print("请设置: export GEMINI_API_KEY='你的API密钥'")
         sys.exit(1)
 
-    print("✅ 找到 GEMINI_API_KEY")
-    
     client = genai.Client(api_key=api_key)
     chosen = random.choice(topics)
-    print(f"📌 选中主题: {chosen['title']}")
     
     # 获取配图
     thumbnail_url = get_unsplash_thumbnail(chosen["image_keywords"])
-    print(f"🖼️ 配图地址: {thumbnail_url[:80]}...")
     
     prompt = f"""
     请以 tinyflathacks.co.uk 的风格写一篇英文博客文章。
@@ -156,104 +173,58 @@ def generate_and_save():
     1. 用第一人称 "I" 或 "we" 写作，像一个普通英国人在分享自己的亲身经历
     2. 使用英式拼写（organise 而不是 organize, colour 而不是 color, flat 而不是 apartment）
     3. 语言口语化，包含以下英式口语表达（适当使用，不要堆砌）：
-       - "proper"（用作强调，如 "proper useful"）
-       - "faff"（指麻烦事）
-       - "honestly" 或 "to be fair"
-       - "I'll be honest with you" 或 "right, let me tell you"
-       - "a bit of a nightmare"
-    4. 包含幽默感和适度的自嘲（比如提到自己测量错了尺寸、买错了东西、拖延了很久才动手）
-    5. 不要使用 "delve into"、"unleash"、"realm" 这类典型的 AI 套话
-    6. 段落要短，句子要有节奏感，不要写长难句
+       - "proper"、"faff"、"honestly"、"to be fair"
+       - "I'll be honest with you"、"a bit of a nightmare"
+    4. 包含幽默感和适度的自嘲
+    5. 不要使用 "delve into"、"unleash"、"realm" 这类 AI 套话
+    6. 段落要短，句子要有节奏感
     7. 要有具体的数字（如房间尺寸、花费金额、时间）
 
-    **内容结构要求（非常重要）：**
-    1. Front Matter（YAML 格式）必须严格遵循以下格式，分隔符 '---' 必须单独成行：
-       ---
-       title: "你的标题"
+    **内容结构要求：**
+    1. Front Matter 包含以下字段（用 YAML 格式，以 --- 包裹）：
+       title: 一个有吸引力的标题
        date: {datetime.date.today().strftime("%Y-%m-%d")}
-       description: "一句话概括"
-       categories:
-         - "分类名"
-       tags:
-         - "标签1"
-         - "标签2"
+       description: 一句话概括
+       categories: ["分类1", "分类2"]
+       tags: ["标签1", "标签2", "标签3"]
        draft: false
-       ---
-    2. **重要警告**：正文中绝对不能再出现单独成行的 '---'，否则会导致 YAML 解析失败。如果需要使用分隔线，请使用 '***' 或 '___' 代替。
-    3. 引言：点出问题，让读者产生共鸣
-    4. "Before" 部分：描述改造前的糟糕状态（具体细节）
-    5. "The Plan" 或 "What We Changed"：列出具体改动
-    6. "After" 部分：改造后的对比感受
-    7. 一个简短的总结或建议
+    2. 正文结构：引言 -> "Before" 部分 -> "The Plan" -> "After" 部分 -> 总结
 
     **字数要求：** 1200-1500 词
 
-    请直接输出 Markdown 格式的文章，不要加额外的说明文字。确保 Front Matter 格式完全正确，以 '---' 开始和结束，正文中不要使用 '---'。
+    请直接输出 Markdown 格式的文章，不要加额外的说明文字。
     """
 
-    print("🤖 正在调用 Gemini API 生成文章...")
-    try:
-        response = client.models.generate_content(
-            model='gemini-3.1-flash-lite',
-            contents=prompt
-        )
-        print("✅ Gemini API 调用成功")
-    except Exception as e:
-        print(f"❌ Gemini API 调用失败: {e}")
-        sys.exit(1)
+    print(f"正在生成文章: {chosen['title']} ...")
+    response = client.models.generate_content(
+        model='gemini-3.1-flash-lite',
+        contents=prompt
+    )
 
     full_content = response.text
-    print(f"📄 生成内容长度: {len(full_content)} 字符")
     
-    # ---- 清理 Front Matter 格式 ----
-    print("🧹 正在清理 Front Matter 格式...")
-    full_content = clean_front_matter(full_content)
+    # ---- 强制修复 Front Matter ----
+    print("正在修复 Front Matter 格式...")
+    fixed_content, title = force_fix_front_matter(full_content)
     
-    # ---- 从文章中提取 title 来生成文件名 ----
-    # 更宽松的 title 匹配
-    title_match = re.search(r'^title:\s*["\']?(.+?)["\']?$', full_content, re.MULTILINE)
-    if title_match:
-        raw_title = title_match.group(1).strip()
-        # 如果标题太长，截断
-        if len(raw_title) > 80:
-            raw_title = raw_title[:80]
-        file_slug = slugify(raw_title)
-        filename = f"content/posts/{file_slug}.md"
-        print(f"📝 提取到标题: {raw_title[:60]}...")
-    else:
-        # fallback：如果提取不到标题，用主题名
-        filename = f"content/posts/{chosen['title']}.md"
-        print("⚠️ 警告：未能从文章中提取标题，使用默认文件名")
-
+    # ---- 生成安全的文件名（用时间戳，不依赖标题） ----
+    timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    random_suffix = random.randint(1000, 9999)
+    # 从标题取前几个词作为文件名的可读部分
+    title_words = re.sub(r'[^\w\s]', '', title).strip().lower().split()[:4]
+    title_slug = '-'.join(title_words) if title_words else chosen['title']
+    filename = f"content/posts/{timestamp}-{title_slug}-{random_suffix}.md"
+    
     # 确保目录存在
     os.makedirs(os.path.dirname(filename), exist_ok=True)
     
-    # 在文章开头插入图片引用（thumbnail）
-    if full_content.startswith("---"):
-        parts = full_content.split("---", 2)
-        if len(parts) >= 3:
-            front_matter = parts[1]
-            if "thumbnail:" not in front_matter:
-                front_matter += f'\nthumbnail: "{thumbnail_url}"'
-            full_content = f"---{front_matter}---{parts[2]}"
-    else:
-        # 如果没有 Front Matter，直接在前面加
-        full_content = f'---\nthumbnail: "{thumbnail_url}"\n---\n{full_content}'
-    
     # 保存文件
-    try:
-        with open(filename, "w", encoding="utf-8") as f:
-            f.write(full_content)
-        print(f"✅ 文章已成功生成并保存至: {filename}")
-        print(f"🖼️ 配图: {thumbnail_url}")
-    except Exception as e:
-        print(f"❌ 保存文件失败: {e}")
-        sys.exit(1)
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(fixed_content)
+        
+    print(f"✅ 文章已成功生成并保存至: {filename}")
+    print(f"📝 标题: {title[:80]}...")
+    print(f"🖼️ 配图: {thumbnail_url}")
 
 if __name__ == "__main__":
-    print("=" * 60)
-    print("🚀 TinyFlatHacks 文章生成器")
-    print("=" * 60)
     generate_and_save()
-    print("=" * 60)
-    print("🎉 完成！")
