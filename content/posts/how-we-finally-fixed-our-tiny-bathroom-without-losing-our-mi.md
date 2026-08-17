@@ -11,7 +11,8 @@ tags:
   - home renovation
 draft: false
 
-thumbnail: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"---
+thumbnail: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
+---
 
 Right, let me tell you—if you’ve ever lived in a standard British flat, you know the pain of the "shoebox bathroom." Ours was, quite frankly, a bit of a nightmare. It measured about 1.8 metres by 2.2 metres, and honestly, you couldn't swing a cat in there without hitting the towel rail or knocking over a shampoo bottle.
 
