@@ -1,0 +1,57 @@
+name: Auto Generate Hugo Article
+
+on:
+  workflow_dispatch:  # 手动触发（用于测试）
+  schedule:
+    - cron: '0 9 * * 1'  # 每周一上午 9 点（UTC 时间）自动运行
+
+jobs:
+  generate-and-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install google-genai
+
+      - name: Generate Article
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python .github/scripts/generate_article.py
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if [[ -n $(git status --porcelain content/posts/) ]]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.check_changes.outputs.changes == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GH_PAT }}  # 推荐使用 Personal Access Token
+          commit-message: "chore: auto-generate new hugo article via Gemini"
+          title: "🤖 新文章已生成：请审核并合并"
+          body: |
+            此 PR 由 GitHub Actions 和 Gemini 自动生成，请人工检查内容是否符合要求。
+
+            - **文章数量**：1 篇
+            - **审核重点**：内容准确性、语气是否符合英式风格
+          branch: "auto-gemini-article"
+          base: "main"
+          add-paths: |
+            content/posts/*.md
+          delete-branch: true  # PR 合并后自动删除分支

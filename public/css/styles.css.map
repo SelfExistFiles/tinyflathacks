@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "styles.css",
-	"sourceRoot": "E:/TestCode/hugoclarity",
+	"sourceRoot": "D:/TestCode/TestDemo/tinyflathacks",
 	"sources": [
 		"themes/clarity/assets/sass/main.sass",
 		"themes/clarity/assets/sass/_variables.sass",
