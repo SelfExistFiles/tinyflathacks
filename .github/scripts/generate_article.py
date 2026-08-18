@@ -213,7 +213,7 @@ def generate_and_save():
     # 从标题取前几个词作为文件名的可读部分
     title_words = re.sub(r'[^\w\s]', '', title).strip().lower().split()[:4]
     title_slug = '-'.join(title_words) if title_words else chosen['title']
-    filename = f"content/posts/{timestamp}-{title_slug}-{random_suffix}.md"
+    filename = f"content/posts/{title_slug}-{random_suffix}.md"
     
     # 确保目录存在
     os.makedirs(os.path.dirname(filename), exist_ok=True)
