@@ -3,11 +3,10 @@ import sys
 import datetime
 import random
 import re
-import requests
 from google import genai
 from google.genai import types
 
-# 拓展主题池：包含 Furniturebox.co.uk 核心产品线
+# 主题池与对应 Furniturebox UK 产品线
 topics = [
     {
         "title": "small-dining-room-makeover",
@@ -41,13 +40,13 @@ def slugify(title):
 
 def generate_image_with_gemini(client, prompt_text, output_path):
     """
-    使用 Gemini API 生成真实高清图片
+    使用 Gemini / Imagen 模型生成真实图片，带完备容错
     """
     print(f"🎨 正在使用 Gemini 生成图片: {prompt_text[:50]}...")
     try:
-        # 调用 Gemini Imagen 模型生成图片
+        # 使用最新的 imagen-3.0-generate-001 或通用生成接口
         result = client.models.generate_images(
-            model='imagen-3.0-generate-002',
+            model='imagen-3.0-generate-001',
             prompt=prompt_text,
             config=types.GenerateImagesConfig(
                 number_of_images=1,
@@ -56,14 +55,15 @@ def generate_image_with_gemini(client, prompt_text, output_path):
             )
         )
         
-        for generated_image in result.generated_images:
-            with open(output_path, "wb") as f:
-                f.write(generated_image.image.image_bytes)
-            print(f"✅ 图片生成成功并保存至: {output_path}")
-            return True
+        if result and hasattr(result, 'generated_images') and result.generated_images:
+            for generated_image in result.generated_images:
+                with open(output_path, "wb") as f:
+                    f.write(generated_image.image.image_bytes)
+                print(f"✅ 图片生成成功并保存至: {output_path}")
+                return True
     except Exception as e:
-        print(f"⚠️ 图片生成失败 ({e})，将回退使用本地占位图指示。")
-        return False
+        print(f"⚠️ 图片生成未成功 ({e})，自动回退至默认占位图，不影响文章生成。")
+    return False
 
 def generate_and_save():
     api_key = os.getenv("GEMINI_API_KEY")
@@ -79,11 +79,11 @@ def generate_and_save():
     img_filename = f"static/images/{chosen['title']}-{today}.jpg"
     os.makedirs("static/images", exist_ok=True)
     
-    # 1. 使用 Gemini 生成符合要求的图片
+    # 1. 生成图片（失败自动降级）
     image_generated = generate_image_with_gemini(client, chosen["prompt_concept"], img_filename)
     thumbnail_url = f"/{img_filename}" if image_generated else "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
 
-    # 2. 生成文章的 Prompt，融合 Furniturebox.co.uk 元素
+    # 2. 生成文章（使用官方推荐的最新模型 gemini-3.6-flash）
     prompt = f"""
     请以 tinyflathacks.co.uk 的风格写一篇英文博客文章。
 
@@ -124,13 +124,20 @@ def generate_and_save():
     """
 
     print(f"正在生成文章: {chosen['title']} ...")
-    response = client.models.generate_content(
-        model='gemini-2.5-flash',
-        contents=prompt
-    )
+    try:
+        response = client.models.generate_content(
+            model='gemini-3.6-flash',
+            contents=prompt
+        )
+        full_content = response.text
+    except Exception as e:
+        print(f"⚠️ gemini-3.6-flash 遇到问题，尝试回退模型 gemini-3.1-flash-lite: {e}")
+        response = client.models.generate_content(
+            model='gemini-3.1-flash-lite',
+            contents=prompt
+        )
+        full_content = response.text
 
-    full_content = response.text
-    
     # 从生成文章中提取 title 作为文件名
     title_match = re.search(r'^title:\s*"(.+?)"', full_content, re.MULTILINE)
     if title_match:
@@ -146,7 +153,7 @@ def generate_and_save():
     with open(filename, "w", encoding="utf-8") as f:
         f.write(full_content)
         
-    print(f"✅ 文章与配图已同步完成并保存至: {filename}")
+    print(f"✅ 文章与配图处理完成并保存至: {filename}")
 
 if __name__ == "__main__":
     generate_and_save()
