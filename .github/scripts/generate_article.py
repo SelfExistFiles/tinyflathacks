@@ -46,7 +46,7 @@ def generate_image_with_gemini(client, prompt_text, output_path):
     try:
         # 使用最新的 imagen-3.0-generate-001 或通用生成接口
         result = client.models.generate_images(
-            model='imagen-3.0-generate-001',
+            model='imagen-3.0-generate-002',
             prompt=prompt_text,
             config=types.GenerateImagesConfig(
                 number_of_images=1,
