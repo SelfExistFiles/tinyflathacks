@@ -3,6 +3,7 @@ import sys
 import datetime
 import random
 import re
+import time
 from google import genai
 from google.genai import types
 
@@ -31,9 +32,7 @@ topics = [
 def slugify(title):
     """将标题转换为干净安全的 ASCII 文件名 slug"""
     slug = title.lower()
-    # 替换常见上标字符
     slug = slug.replace('²', '2').replace('³', '3')
-    # 移除标点符号与非 ASCII 字符
     slug = re.sub(r'[^\w\s-]', '', slug)
     slug = re.sub(r'[-\s]+', '-', slug)
     slug = slug.strip('-')
@@ -43,9 +42,9 @@ def slugify(title):
 
 def generate_image_with_gemini(client, prompt_text, output_path):
     """
-    使用 Gemini Imagen 尝试生成图片，若权限不够或 API 废弃则无缝回退
+    使用 Gemini Imagen 尝试生成图片，若无权限则优雅回退
     """
-    print(f"🎨 正在尝试使用 Gemini 生成配图...")
+    print(f"🎨 正在尝试生成配图...")
     try:
         result = client.models.generate_images(
             model='imagen-3.0-generate-002',
@@ -64,8 +63,32 @@ def generate_image_with_gemini(client, prompt_text, output_path):
                 print(f"✅ Gemini 配图成功保存至: {output_path}")
                 return True
     except Exception as e:
-        print(f"ℹ️ Gemini 生图暂不可用 ({e})，自动回退至默认占位图。")
+        print(f"ℹ️ 生图 API 未响应 ({e})，使用默认高品质占位图。")
     return False
+
+def generate_article_with_retry(client, prompt):
+    """
+    优先使用 gemini-3.1-flash-lite（额度更高），带 429 额度限流自动等待重试逻辑
+    """
+    models_to_try = ['gemini-3.1-flash-lite', 'gemini-3.6-flash']
+    
+    for model_name in models_to_try:
+        try:
+            print(f"正在尝试使用模型生成文章: {model_name} ...")
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt
+            )
+            return response.text
+        except Exception as e:
+            err_str = str(e)
+            if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
+                print(f"⚠️ {model_name} 触发表限制 (429)，等待 10 秒后尝试下一个备选模型...")
+                time.sleep(10)
+            else:
+                print(f"⚠️ {model_name} 发生错误: {e}")
+                
+    raise RuntimeError("所有模型生成尝试均失败，请检查 API 额度与 Key 状态。")
 
 def generate_and_save():
     api_key = os.getenv("GEMINI_API_KEY")
@@ -77,14 +100,12 @@ def generate_and_save():
     chosen = random.choice(topics)
     today = datetime.date.today().strftime("%Y-%m-%d")
     
-    # 1. 设定配图路径并尝试生成
     img_filename = f"static/images/{chosen['title']}-{today}.jpg"
     os.makedirs("static/images", exist_ok=True)
     
     image_generated = generate_image_with_gemini(client, chosen["prompt_concept"], img_filename)
     thumbnail_url = f"/{img_filename}" if image_generated else "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
 
-    # 2. 构造嵌入 Furniturebox UK 产品特性的文章 Prompt
     prompt = f"""
     请以 tinyflathacks.co.uk 的风格写一篇英文博客文章。
 
@@ -124,22 +145,9 @@ def generate_and_save():
     请直接输出标准的 Markdown 内容。
     """
 
-    print(f"正在生成文章: {chosen['title']} ...")
-    try:
-        response = client.models.generate_content(
-            model='gemini-3.6-flash',
-            contents=prompt
-        )
-        full_content = response.text
-    except Exception as e:
-        print(f"⚠️ gemini-3.6-flash 异常，降级使用 gemini-3.1-flash-lite: {e}")
-        response = client.models.generate_content(
-            model='gemini-3.1-flash-lite',
-            contents=prompt
-        )
-        full_content = response.text
+    full_content = generate_article_with_retry(client, prompt)
 
-    # 3. 增强版 Front Matter 标题提取（适配双引号、单引号或无引号格式）
+    # 提取 Front Matter 标题
     title_match = re.search(r'^title:\s*["\']?(.*?)["\']?\s*$', full_content, re.MULTILINE)
     if title_match and title_match.group(1):
         raw_title = title_match.group(1).strip()
@@ -152,7 +160,6 @@ def generate_and_save():
 
     os.makedirs(os.path.dirname(filename), exist_ok=True)
     
-    # 4. 保存为标准 Markdown 文件
     with open(filename, "w", encoding="utf-8") as f:
         f.write(full_content)
         
