@@ -5,7 +5,7 @@ on:
   schedule:
     - cron: '0 9 * * *'  # 每天上午 9 点（UTC 时间）自动运行
   pull_request:          # PR 时触发（用于状态检查）
-    branches: [ main ]
+    branches: [ auto-gemini-article ]
 
 jobs:
   generate-and-pr:
