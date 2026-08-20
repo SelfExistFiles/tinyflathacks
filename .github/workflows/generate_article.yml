@@ -3,7 +3,9 @@ name: Auto Generate Hugo Article
 on:
   workflow_dispatch:  # 手动触发（用于测试）
   schedule:
-    - cron: '0 9 * * 1'  # 每周一上午 9 点（UTC 时间）自动运行
+    - cron: '0 9 * * *'  # 每天上午 9 点（UTC 时间）自动运行
+  pull_request:          # PR 时触发（用于状态检查）
+    branches: [ main ]
 
 jobs:
   generate-and-pr:
