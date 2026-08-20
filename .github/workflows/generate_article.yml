@@ -56,6 +56,6 @@ jobs:
           branch: "auto-gemini-article"
           base: "main"
           add-paths: |
-            content/posts/*.md
-            static/images/*
+            content/posts/
+            static/images/
           delete-branch: true
