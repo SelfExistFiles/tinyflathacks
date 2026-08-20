@@ -29,8 +29,11 @@ topics = [
 ]
 
 def slugify(title):
-    """将标题转换为适合文件名的 slug"""
+    """将标题转换为干净安全的 ASCII 文件名 slug"""
     slug = title.lower()
+    # 替换常见上标字符
+    slug = slug.replace('²', '2').replace('³', '3')
+    # 移除标点符号与非 ASCII 字符
     slug = re.sub(r'[^\w\s-]', '', slug)
     slug = re.sub(r'[-\s]+', '-', slug)
     slug = slug.strip('-')
@@ -40,11 +43,10 @@ def slugify(title):
 
 def generate_image_with_gemini(client, prompt_text, output_path):
     """
-    使用 Gemini / Imagen 模型生成真实图片，带完备容错
+    使用 Gemini Imagen 尝试生成图片，若权限不够或 API 废弃则无缝回退
     """
-    print(f"🎨 正在使用 Gemini 生成图片: {prompt_text[:50]}...")
+    print(f"🎨 正在尝试使用 Gemini 生成配图...")
     try:
-        # 使用最新的 imagen-3.0-generate-001 或通用生成接口
         result = client.models.generate_images(
             model='imagen-3.0-generate-002',
             prompt=prompt_text,
@@ -59,10 +61,10 @@ def generate_image_with_gemini(client, prompt_text, output_path):
             for generated_image in result.generated_images:
                 with open(output_path, "wb") as f:
                     f.write(generated_image.image.image_bytes)
-                print(f"✅ 图片生成成功并保存至: {output_path}")
+                print(f"✅ Gemini 配图成功保存至: {output_path}")
                 return True
     except Exception as e:
-        print(f"⚠️ 图片生成未成功 ({e})，自动回退至默认占位图，不影响文章生成。")
+        print(f"ℹ️ Gemini 生图暂不可用 ({e})，自动回退至默认占位图。")
     return False
 
 def generate_and_save():
@@ -75,15 +77,14 @@ def generate_and_save():
     chosen = random.choice(topics)
     today = datetime.date.today().strftime("%Y-%m-%d")
     
-    # 设定生成图片的存储路径
+    # 1. 设定配图路径并尝试生成
     img_filename = f"static/images/{chosen['title']}-{today}.jpg"
     os.makedirs("static/images", exist_ok=True)
     
-    # 1. 生成图片（失败自动降级）
     image_generated = generate_image_with_gemini(client, chosen["prompt_concept"], img_filename)
     thumbnail_url = f"/{img_filename}" if image_generated else "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
 
-    # 2. 生成文章（使用官方推荐的最新模型 gemini-3.6-flash）
+    # 2. 构造嵌入 Furniturebox UK 产品特性的文章 Prompt
     prompt = f"""
     请以 tinyflathacks.co.uk 的风格写一篇英文博客文章。
 
@@ -101,11 +102,11 @@ def generate_and_save():
        - "sorted"
     4. 带有适度的英式自嘲幽默（比如吐槽英国阴雨天晾衣服、卷尺量错尺寸、搬运大体积家具卡在狭窄楼道等）。
     5. **绝对禁止**使用典型 AI 套话（如 "delve into", "unleash", "realm", "tapestry", "game-changer"）。
-    6. 包含具体真实的数据（如房间具体尺寸 35m², 花费金额 £250, 搬运时间等）。
+    6. 包含具体真实的数据（如房间具体尺寸 35m2, 花费金额 £250, 搬运时间等）。
 
     **内容结构要求：**
     1. Front Matter（YAML 格式）：
-       - title:（必须有吸引力、像真实博客，例如 "How We Squeezed a Proper 4-Seater Dining Area into Our 35m² London Flat"）
+       - title:（必须有吸引力、像真实博客，例如 "How We Squeezed a Proper 4-Seater Dining Area into Our 35m2 London Flat"）
        - date: "{today}"
        - description
        - categories
@@ -131,29 +132,31 @@ def generate_and_save():
         )
         full_content = response.text
     except Exception as e:
-        print(f"⚠️ gemini-3.6-flash 遇到问题，尝试回退模型 gemini-3.1-flash-lite: {e}")
+        print(f"⚠️ gemini-3.6-flash 异常，降级使用 gemini-3.1-flash-lite: {e}")
         response = client.models.generate_content(
             model='gemini-3.1-flash-lite',
             contents=prompt
         )
         full_content = response.text
 
-    # 从生成文章中提取 title 作为文件名
-    title_match = re.search(r'^title:\s*"(.+?)"', full_content, re.MULTILINE)
-    if title_match:
-        raw_title = title_match.group(1)
+    # 3. 增强版 Front Matter 标题提取（适配双引号、单引号或无引号格式）
+    title_match = re.search(r'^title:\s*["\']?(.*?)["\']?\s*$', full_content, re.MULTILINE)
+    if title_match and title_match.group(1):
+        raw_title = title_match.group(1).strip()
         file_slug = slugify(raw_title)
         filename = f"content/posts/{file_slug}.md"
-        print(f"📝 提取到标题: {raw_title}")
+        print(f"📝 成功提取标题: {raw_title}")
     else:
         filename = f"content/posts/{chosen['title']}.md"
+        print("⚠️ 未找到明确标题，使用默认主题名作文件名")
 
     os.makedirs(os.path.dirname(filename), exist_ok=True)
     
+    # 4. 保存为标准 Markdown 文件
     with open(filename, "w", encoding="utf-8") as f:
         f.write(full_content)
         
-    print(f"✅ 文章与配图处理完成并保存至: {filename}")
+    print(f"✅ 文章与配图处理完成，成功保存至: {filename}")
 
 if __name__ == "__main__":
     generate_and_save()
