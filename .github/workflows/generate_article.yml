@@ -1,11 +1,11 @@
 name: Auto Generate Hugo Article
 
 on:
-  workflow_dispatch:  # 手动触发（用于测试）
+  workflow_dispatch:
   schedule:
-    - cron: '0 9 * * *'  # 每天上午 9 点（UTC 时间）自动运行
-  pull_request:          # PR 时触发（用于状态检查）
-    branches: [ auto-gemini-article ]
+    - cron: '0 9 * * *'  # 每天上午 9 点 UTC
+  pull_request:
+    branches: [ main ]   # ← 这里改成了 main
 
 jobs:
   generate-and-pr:
@@ -31,6 +31,11 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python .github/scripts/generate_article.py
 
+      - name: Clean up old files (avoid conflicts)
+        run: |
+          # 只保留最近 5 分钟内生成的文件，其他旧文件删除
+          find content/posts/ -type f -name "*.md" -mmin +5 -delete 2>/dev/null || true
+
       - name: Check for changes
         id: check_changes
         run: |
@@ -44,7 +49,7 @@ jobs:
         if: steps.check_changes.outputs.changes == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GH_PAT }}  # 推荐使用 Personal Access Token
+          token: ${{ secrets.GH_PAT }}
           commit-message: "chore: auto-generate new hugo article via Gemini"
           title: "🤖 新文章已生成：请审核并合并"
           body: |
@@ -56,4 +61,4 @@ jobs:
           base: "main"
           add-paths: |
             content/posts/*.md
-          delete-branch: true  # PR 合并后自动删除分支
+          delete-branch: true
