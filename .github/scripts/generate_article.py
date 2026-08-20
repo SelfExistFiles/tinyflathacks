@@ -42,51 +42,59 @@ def slugify(title):
 
 def generate_image_with_gemini(client, prompt_text, output_path):
     """
-    使用 generate_content 标准接口调用 Imagen 生成图片，去除废弃警告；无权限时自动优雅降级
+    使用 generate_images 标准接口生成图片，若无权限或格式不匹配则优雅降级
     """
     print(f"🎨 正在尝试生成配图...")
     try:
-        response = client.models.generate_content(
+        result = client.models.generate_images(
             model='imagen-3.0-generate-002',
-            contents=prompt_text,
-            config=types.GenerateContentConfig(
-                response_mime_type="image/jpeg"
+            prompt=prompt_text,
+            config=types.GenerateImagesConfig(
+                number_of_images=1,
+                aspect_ratio="16:9",
+                output_mime_type="image/jpeg"
             )
         )
         
-        if response.candidates and response.candidates[0].content.parts:
-            for part in response.candidates[0].content.parts:
-                if part.inline_data and part.inline_data.data:
-                    with open(output_path, "wb") as f:
-                        f.write(part.inline_data.data)
-                    print(f"✅ Gemini 配图成功保存至: {output_path}")
-                    return True
+        if result and hasattr(result, 'generated_images') and result.generated_images:
+            for generated_image in result.generated_images:
+                with open(output_path, "wb") as f:
+                    f.write(generated_image.image.image_bytes)
+                print(f"✅ Gemini 配图成功保存至: {output_path}")
+                return True
     except Exception as e:
         print(f"ℹ️ 生图 API 未响应 ({e})，使用默认高品质占位图。")
     return False
 
-def generate_article_with_retry(client, prompt):
+def generate_article_with_retry(client, prompt, max_retries=3):
     """
-    优先使用 gemini-3.1-flash-lite（高免费额度），具备 429 限流自动重试机制
+    带指数退避和重试机制的文章生成，应对 429 (限流) 和 503 (服务器高负载)
     """
     models_to_try = ['gemini-3.1-flash-lite', 'gemini-3.6-flash']
     
-    for model_name in models_to_try:
-        try:
-            print(f"正在尝试使用模型生成文章: {model_name} ...")
-            response = client.models.generate_content(
-                model=model_name,
-                contents=prompt
-            )
-            return response.text
-        except Exception as e:
-            err_str = str(e)
-            if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
-                print(f"⚠️ {model_name} 触发表限制 (429)，等待 10 秒后尝试下一个备选模型...")
-                time.sleep(10)
-            else:
-                print(f"⚠️ {model_name} 发生错误: {e}")
-                
+    for attempt in range(1, max_retries + 1):
+        for model_name in models_to_try:
+            try:
+                print(f"正在尝试使用模型生成文章 (第 {attempt} 轮尝试): {model_name} ...")
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=prompt
+                )
+                if response.text:
+                    return response.text
+            except Exception as e:
+                err_str = str(e)
+                if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
+                    wait_time = attempt * 12
+                    print(f"⚠️ {model_name} 触发限流 (429)，等待 {wait_time} 秒...")
+                    time.sleep(wait_time)
+                elif "503" in err_str or "UNAVAILABLE" in err_str:
+                    wait_time = attempt * 10
+                    print(f"⚠️ {model_name} 服务繁忙 (503)，等待 {wait_time} 秒...")
+                    time.sleep(wait_time)
+                else:
+                    print(f"⚠️ {model_name} 报错: {e}")
+                    
     raise RuntimeError("所有模型生成尝试均失败，请检查 API 额度与 Key 状态。")
 
 def generate_and_save():
