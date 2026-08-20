@@ -34,7 +34,7 @@ jobs:
       - name: Clean up old files (avoid conflicts)
         run: |
           # 只保留最近 5 分钟内生成的文件，其他旧文件删除
-          find content/posts/ -type f -name "*.md" -mmin +5 -delete 2>/dev/null || true
+          #find content/posts/ -type f -name "*.md" -mmin +5 -delete 2>/dev/null || true
 
       - name: Check for changes
         id: check_changes
