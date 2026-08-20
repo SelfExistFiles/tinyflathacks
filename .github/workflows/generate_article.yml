@@ -4,8 +4,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 9 * * *'  # 每天上午 9 点 UTC
-  pull_request:
-    branches: [ main ]   # ← 这里改成了 main
 
 jobs:
   generate-and-pr:
@@ -17,6 +15,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: main         # 显式检出 main 分支，避免 Detached HEAD
+          fetch-depth: 0    # 检出完整 Git 历史，彻底解决 Cherry-pick 冲突
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -31,11 +32,6 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python .github/scripts/generate_article.py
 
-      - name: Clean up old files (avoid conflicts)
-        run: |
-          # 只保留最近 5 分钟内生成的文件，其他旧文件删除
-          #find content/posts/ -type f -name "*.md" -mmin +5 -delete 2>/dev/null || true
-
       - name: Check for changes
         id: check_changes
         run: |
@@ -47,7 +43,7 @@ jobs:
 
       - name: Create Pull Request
         if: steps.check_changes.outputs.changes == 'true'
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GH_PAT }}
           commit-message: "chore: auto-generate new hugo article via Gemini"
@@ -61,4 +57,5 @@ jobs:
           base: "main"
           add-paths: |
             content/posts/*.md
+            static/images/*
           delete-branch: true
