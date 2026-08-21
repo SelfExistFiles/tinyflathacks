@@ -4,28 +4,32 @@ import datetime
 import random
 import re
 import time
-from google import genai
-from google.genai import types
+import requests
+from openai import OpenAI
 
-# 主题池与对应 Furniturebox UK 产品线
+# AnyRouter 中转站配置
+ANYROUTER_API_KEY = os.getenv("ANYROUTER_API_KEY")
+ANYROUTER_BASE_URL = os.getenv("ANYROUTER_BASE_URL", "https://anyrouter.top/v1")
+
+# 主题池与对应 Furniturebox UK 产品线及 Unsplash 搜索关键词
 topics = [
     {
         "title": "small-dining-room-makeover",
         "desc": "小户型餐厅/客厅角落改造，使用 Furniturebox 的折叠/可伸缩餐桌",
         "furniturebox_products": ["Chelsea White Extendable Dining Table", "Novara Velvet Chairs", "Roma Glass Table Set"],
-        "prompt_concept": "A bright UK apartment dining corner with a chic extendable dining table and velvet chairs, warm natural light from sash windows, modern stylish Scandinavian-UK interior, photorealistic."
+        "unsplash_query": "scandinavian dining room table apartment"
     },
     {
         "title": "compact-living-room-zones",
         "desc": "利用 Furniturebox 的小巧沙发与嵌套茶几，在小客厅划分工作与放松区域",
         "furniturebox_products": ["Santorini Velvet Sofa", "Lucia Nest of Tables", "Sienna High Gloss Coffee Table"],
-        "prompt_concept": "A compact modern British living room with a sleek velvet sofa and a wooden nest of coffee tables, aesthetic UK home decor, photorealistic 8k."
+        "unsplash_query": "modern compact living room sofa"
     },
     {
         "title": "balcony-and-patio-hacks",
         "desc": "英国小阳台/狭长后院改造，利用 Furniturebox 户外 Bistro 套装实现早晨咖啡自由",
         "furniturebox_products": ["Barcelona Rattan Bistro Set", "Milan Folding Garden Set"],
-        "prompt_concept": "A charming small London flat balcony with a rattan bistro table and two folding chairs, fairy lights, potted plants, overlooking brick terraced houses."
+        "unsplash_query": "small balcony bistro set apartment"
     }
 ]
 
@@ -40,119 +44,122 @@ def slugify(title):
         slug = slug[:60].rstrip('-')
     return slug
 
-def generate_image_with_gemini(client, prompt_text, output_path):
+def fetch_unsplash_image(query, output_path, access_key):
     """
-    使用 generate_images 标准接口生成图片，若无权限或格式不匹配则优雅降级
+    使用 Unsplash 官方 API Key 随机获取高质量符合关键词的配图并保存到本地
     """
-    print(f"🎨 正在尝试生成配图...")
+    print(f"🖼️ 正在从 Unsplash 检索符合关键词 '{query}' 的配图...")
+    if not access_key:
+        print("⚠️ 未配置 UNSPLASH_ACCESS_KEY，降级使用网络占位图。")
+        return False
+
+    url = "https://api.unsplash.com/photos/random"
+    headers = {
+        "Authorization": f"Client-ID {access_key}"
+    }
+    params = {
+        "query": query,
+        "orientation": "landscape"
+    }
+
     try:
-        result = client.models.generate_images(
-            model='imagen-3.0-generate-002',
-            prompt=prompt_text,
-            config=types.GenerateImagesConfig(
-                number_of_images=1,
-                aspect_ratio="16:9",
-                output_mime_type="image/jpeg"
-            )
-        )
-        
-        if result and hasattr(result, 'generated_images') and result.generated_images:
-            for generated_image in result.generated_images:
-                with open(output_path, "wb") as f:
-                    f.write(generated_image.image.image_bytes)
-                print(f"✅ Gemini 配图成功保存至: {output_path}")
-                return True
+        response = requests.get(url, headers=headers, params=params, timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            image_url = data["urls"]["regular"]
+            
+            img_data = requests.get(image_url, timeout=15).content
+            with open(output_path, "wb") as f:
+                f.write(img_data)
+            print(f"✅ Unsplash 配图成功保存至: {output_path}")
+            return True
+        else:
+            print(f"⚠️ Unsplash API 返回错误状态码: {response.status_code}, 响应: {response.text}")
     except Exception as e:
-        print(f"ℹ️ 生图 API 未响应 ({e})，使用默认高品质占位图。")
+        print(f"ℹ️ 从 Unsplash 获取图片失败 ({e})，使用默认占位图。")
     return False
 
-def generate_article_with_retry(client, prompt, max_retries=3):
+def generate_article_with_claude(client, prompt, max_retries=3):
     """
-    带指数退避和重试机制的文章生成，应对 429 (限流) 和 503 (服务器高负载)
+    使用 AnyRouter 上的 Claude 模型生成文章，自带重试机制
     """
-    models_to_try = ['gemini-3.1-flash-lite', 'gemini-3.6-flash']
-    
+    # AnyRouter 上的 Claude 模型标识（支持优先使用 3.5 Sonnet）
+    models_to_try = ["claude-3-5-sonnet-20241022", "claude-3-5-sonnet", "claude-3-haiku-20240307"]
+
     for attempt in range(1, max_retries + 1):
         for model_name in models_to_try:
             try:
-                print(f"正在尝试使用模型生成文章 (第 {attempt} 轮尝试): {model_name} ...")
-                response = client.models.generate_content(
+                print(f"正在尝试使用 AnyRouter Claude 模型生成文章 (第 {attempt} 轮尝试): {model_name} ...")
+                response = client.chat.completions.create(
                     model=model_name,
-                    contents=prompt
+                    messages=[
+                        {"role": "user", "content": prompt}
+                    ],
+                    temperature=0.7
                 )
-                if response.text:
-                    return response.text
+                content = response.choices[0].message.content
+                if content:
+                    return content
             except Exception as e:
                 err_str = str(e)
-                if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
-                    wait_time = attempt * 12
-                    print(f"⚠️ {model_name} 触发限流 (429)，等待 {wait_time} 秒...")
-                    time.sleep(wait_time)
-                elif "503" in err_str or "UNAVAILABLE" in err_str:
-                    wait_time = attempt * 10
-                    print(f"⚠️ {model_name} 服务繁忙 (503)，等待 {wait_time} 秒...")
-                    time.sleep(wait_time)
-                else:
-                    print(f"⚠️ {model_name} 报错: {e}")
-                    
-    raise RuntimeError("所有模型生成尝试均失败，请检查 API 额度与 Key 状态。")
+                print(f"⚠️ 模型 {model_name} 响应异常: {err_str}")
+                time.sleep(attempt * 5)
+
+    raise RuntimeError("所有 Claude 模型生成尝试均失败，请检查 AnyRouter API Key 额度或模型标识。")
 
 def generate_and_save():
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        print("错误: 未找到 GEMINI_API_KEY 环境变量")
+    if not ANYROUTER_API_KEY:
+        print("错误: 未找到 ANYROUTER_API_KEY 环境变量")
         sys.exit(1)
 
-    client = genai.Client(api_key=api_key)
+    unsplash_key = os.getenv("UNSPLASH_ACCESS_KEY")
+
+    # 初始化 AnyRouter OpenAI SDK Client
+    client = OpenAI(
+        api_key=ANYROUTER_API_KEY,
+        base_url=ANYROUTER_BASE_URL
+    )
+
     chosen = random.choice(topics)
     today = datetime.date.today().strftime("%Y-%m-%d")
-    
+
     img_filename = f"static/images/{chosen['title']}-{today}.jpg"
     os.makedirs("static/images", exist_ok=True)
-    
-    image_generated = generate_image_with_gemini(client, chosen["prompt_concept"], img_filename)
+
+    image_generated = fetch_unsplash_image(chosen["unsplash_query"], img_filename, unsplash_key)
     thumbnail_url = f"/{img_filename}" if image_generated else "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
 
     prompt = f"""
-    请以 tinyflathacks.co.uk 的风格写一篇英文博客文章。
+    Please write a blog post in native British English for tinyflathacks.co.uk.
 
-    **文章主题：** {chosen['desc']}
-    **重点提及的本地家具品牌与产品：** 参考 Furniturebox.co.uk 的产品（如 {', '.join(chosen['furniturebox_products'])}），突出其“Next Day Free UK Delivery”、“Budget-Friendly”和“Space-Saving Designs”的特点。
+    **Topic:** {chosen['desc']}
+    **Promoted Brand & Products:** Reference Furniturebox.co.uk items ({', '.join(chosen['furniturebox_products'])}), highlighting Next Day Free UK Delivery, budget-friendliness, and space-saving cleverness.
 
-    **写作风格要求（必须严格遵守以去除 AI 味）：**
-    1. 用第一人称 "I" 或 "we" 写作，像一个住在大不列颠（如 London, Manchester 或 Bristol）的真实租房者/小户型屋主在分享亲身经历。
-    2. 使用英式拼写（organise 而不是 organize, colour 而不是 color, flat 而不是 apartment, cosy 而不是 cozy）。
-    3. 语言极度口语化且地道，自然嵌入以下英式表达：
-       - "proper useful" 或 "proper bargain"
-       - "faff"（指麻烦事，如 "assembling flat-pack furniture can be a bit of a faff"）
-       - "honestly" 或 "to be fair"
-       - "a bit of a nightmare"
-       - "sorted"
-    4. 带有适度的英式自嘲幽默（比如吐槽英国阴雨天晾衣服、卷尺量错尺寸、搬运大体积家具卡在狭窄楼道等）。
-    5. **绝对禁止**使用典型 AI 套话（如 "delve into", "unleash", "realm", "tapestry", "game-changer"）。
-    6. 包含具体真实的数据（如房间具体尺寸 35m2, 花费金额 £250, 搬运时间等）。
+    **Tone & Persona (STRICT):**
+    1. Write in 1st person ("I" or "we") as a genuine UK renter living in London, Manchester, or Bristol.
+    2. Use British English spelling throughout (organise, colour, flat, cosy, bloody, sorted).
+    3. Naturally use slang like "proper useful", "a bit of a faff", "honestly", "sorted", "nightmare".
+    4. Add witty British self-deprecation about tight staircases, rainy weather, or assembly failures.
+    5. NO AI buzzwords (delve, unleash, realm, tapestry, game-changer).
 
-    **内容结构要求：**
-    1. Front Matter（YAML 格式）：
-       - title:（必须有吸引力、像真实博客，例如 "How We Squeezed a Proper 4-Seater Dining Area into Our 35m2 London Flat"）
-       - date: "{today}"
-       - description
-       - categories
-       - tags
-       - thumbnail: "{thumbnail_url}"
-       - draft: false
-    2. 引言：吐槽空间太小的痛点，引发英国租房党共鸣。
-    3. "Before: The Cluttered Nightmare"：改造前的惨状（附带 Markdown 图片占位符 `![Before Makeover]({thumbnail_url})`）。
-    4. "The Fix & Furniturebox Discoveries"：如何挑选 Furniturebox.co.uk 的家具（提到次日送达和性价比）。
-    5. "After: How It Changed Our Daily Life"：改造后的体验与空间对比。
-    6. "Budget & Final Verdict"：花费明细清单与实用小建议。
+    **Structure:**
+    1. Front Matter (YAML format):
+       title: "How We..." (must sound authentic)
+       date: "{today}"
+       description: "..."
+       categories: ["Living Room"]
+       tags: ["Small Spaces"]
+       thumbnail: "{thumbnail_url}"
+       draft: false
+    2. Intro & Before: The Cluttered Nightmare (Include markdown image `![Before Makeover]({thumbnail_url})`)
+    3. The Fix & Furniturebox Discoveries
+    4. After: How It Changed Our Daily Life
+    5. Budget Breakdown & Final Verdict
 
-    **字数要求：** 1200-1500 词
-
-    请直接输出标准的 Markdown 内容。
+    Word count: 1200 - 1500 words. Return standard Markdown directly.
     """
 
-    full_content = generate_article_with_retry(client, prompt)
+    full_content = generate_article_with_claude(client, prompt)
 
     # 提取 Front Matter 标题
     title_match = re.search(r'^title:\s*["\']?(.*?)["\']?\s*$', full_content, re.MULTILINE)
@@ -166,10 +173,10 @@ def generate_and_save():
         print("⚠️ 未找到明确标题，使用默认主题名作文件名")
 
     os.makedirs(os.path.dirname(filename), exist_ok=True)
-    
+
     with open(filename, "w", encoding="utf-8") as f:
         f.write(full_content)
-        
+
     print(f"✅ 文章与配图处理完成，成功保存至: {filename}")
 
 if __name__ == "__main__":
