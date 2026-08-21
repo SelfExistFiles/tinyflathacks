@@ -3,7 +3,7 @@ name: Auto Generate Hugo Article
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 9 * * *'  # 每天上午 9 点 UTC
+    - cron: '0 9 * * *'  # 每天 UTC 09:00 (北京时间 17:00) 自动触发运行
 
 jobs:
   generate-and-pr:
@@ -25,17 +25,18 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install google-genai
+        run: pip install google-genai requests
 
-      - name: Generate Article
+      - name: Generate Article & Download Image
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
         run: python .github/scripts/generate_article.py
 
       - name: Check for changes
         id: check_changes
         run: |
-          if [[ -n $(git status --porcelain content/posts/) ]]; then
+          if [[ -n $(git status --porcelain content/posts/ static/images/) ]]; then
             echo "changes=true" >> $GITHUB_OUTPUT
           else
             echo "changes=false" >> $GITHUB_OUTPUT
@@ -46,13 +47,14 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GH_PAT }}
-          commit-message: "chore: auto-generate new hugo article via Gemini"
+          commit-message: "chore: auto-generate new hugo article via Gemini & Unsplash"
           title: "🤖 新文章已生成：请审核并合并"
           body: |
-            此 PR 由 GitHub Actions 和 Gemini 自动生成，请人工检查内容是否符合要求。
-
-            - **文章数量**：1 篇
-            - **审核重点**：内容准确性、语气是否符合英式风格
+            此 PR 由 GitHub Actions 自动生成：
+            - **文章内容**：由 Gemini 驱动生成
+            - **文章配图**：由 Unsplash 自动匹配获取并保存至 `static/images/`
+            
+            请人工检查文本质量与图片契合度后予以合并。
           branch: "auto-gemini-article"
           base: "main"
           add-paths: |
