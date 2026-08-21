@@ -83,11 +83,14 @@ def generate_article_with_claude(client, prompt, max_retries=3):
     """
     使用 AnyRouter 上的 Claude 模型生成文章，自带重试机制
     """
-    # 按照你的 AnyRouter 平台实际拥有的模型名配置（优先使用 Sonnet，失败后自动退避至 Haiku）
+    # 包含了精简别名与全称，确保兼容 AnyRouter 的不同分组映射
     models_to_try = [
-        "claude-3-7-sonnet-20250219",  # 优先选择最新的 3.7 Sonnet
-        "claude-3-5-sonnet-20241022",  # 备选经典的 3.5 Sonnet
-        "claude-3-5-haiku-202401022",  # 兜底轻量模型
+        "claude-3-5-sonnet",            # 别名（最常兼容）
+        "claude-3-7-sonnet",            # 别名
+        "claude-3-5-sonnet-20241022",   # 完整型号
+        "claude-3-7-sonnet-20250219",   # 完整型号
+        "claude-3-5-haiku-20241022",    # 修正拼写后的 Haiku
+        "claude-3-5-haiku",             # Haiku 别名
     ]
 
     for attempt in range(1, max_retries + 1):
@@ -107,7 +110,7 @@ def generate_article_with_claude(client, prompt, max_retries=3):
             except Exception as e:
                 err_str = str(e)
                 print(f"⚠️ 模型 {model_name} 响应异常: {err_str}")
-                time.sleep(attempt * 5)
+                time.sleep(2)
 
     raise RuntimeError("所有 Claude 模型生成尝试均失败，请检查 AnyRouter API Key 额度与节点状态。")
 
