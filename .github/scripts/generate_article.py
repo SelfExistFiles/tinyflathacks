@@ -78,13 +78,17 @@ def fetch_unsplash_image(query, output_path, access_key):
     except Exception as e:
         print(f"ℹ️ 从 Unsplash 获取图片失败 ({e})，使用默认占位图。")
     return False
-
+    
 def generate_article_with_claude(client, prompt, max_retries=3):
     """
     使用 AnyRouter 上的 Claude 模型生成文章，自带重试机制
     """
-    # AnyRouter 上的 Claude 模型标识（支持优先使用 3.5 Sonnet）
-    models_to_try = ["claude-3-5-sonnet-20241022", "claude-3-5-sonnet", "claude-3-haiku-20240307"]
+    # 按照你的 AnyRouter 平台实际拥有的模型名配置（优先使用 Sonnet，失败后自动退避至 Haiku）
+    models_to_try = [
+        "claude-3-7-sonnet-20250219",  # 优先选择最新的 3.7 Sonnet
+        "claude-3-5-sonnet-20241022",  # 备选经典的 3.5 Sonnet
+        "claude-3-5-haiku-202401022",  # 兜底轻量模型
+    ]
 
     for attempt in range(1, max_retries + 1):
         for model_name in models_to_try:
@@ -105,7 +109,7 @@ def generate_article_with_claude(client, prompt, max_retries=3):
                 print(f"⚠️ 模型 {model_name} 响应异常: {err_str}")
                 time.sleep(attempt * 5)
 
-    raise RuntimeError("所有 Claude 模型生成尝试均失败，请检查 AnyRouter API Key 额度或模型标识。")
+    raise RuntimeError("所有 Claude 模型生成尝试均失败，请检查 AnyRouter API Key 额度与节点状态。")
 
 def generate_and_save():
     if not ANYROUTER_API_KEY:
