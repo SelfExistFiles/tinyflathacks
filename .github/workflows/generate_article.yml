@@ -3,7 +3,7 @@ name: Auto Generate Hugo Article
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 9 * * *'  # 每天 UTC 09:00 (北京时间 17:00) 自动触发运行
+    - cron: '0 9 * * *'  # 每天 UTC 09:00 运行
 
 jobs:
   generate-and-pr:
@@ -16,8 +16,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: main         # 显式检出 main 分支，避免 Detached HEAD
-          fetch-depth: 0    # 检出完整 Git 历史，彻底解决 Cherry-pick 冲突
+          ref: main
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -25,11 +25,11 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install google-genai requests
+        run: pip install openai requests
 
       - name: Generate Article & Download Image
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANYROUTER_API_KEY: ${{ secrets.ANYROUTER_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
         run: python .github/scripts/generate_article.py
 
@@ -47,11 +47,11 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GH_PAT }}
-          commit-message: "chore: auto-generate new hugo article via Gemini & Unsplash"
-          title: "🤖 新文章已生成：请审核并合并"
+          commit-message: "chore: auto-generate new hugo article via AnyRouter Claude & Unsplash"
+          title: "🤖 新文章已生成 (Claude 驱动)：请审核并合并"
           body: |
             此 PR 由 GitHub Actions 自动生成：
-            - **文章内容**：由 Gemini 驱动生成
+            - **文章内容**：由 AnyRouter Claude 3.5 Sonnet 驱动生成
             - **文章配图**：由 Unsplash 自动匹配获取并保存至 `static/images/`
             
             请人工检查文本质量与图片契合度后予以合并。
