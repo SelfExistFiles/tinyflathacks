@@ -9,7 +9,7 @@ from openai import OpenAI
 
 # AnyRouter 中转站配置
 ANYROUTER_API_KEY = os.getenv("ANYROUTER_API_KEY")
-ANYROUTER_BASE_URL = os.getenv("ANYROUTER_BASE_URL", "https://anyrouter.top/v1")
+ANYROUTER_BASE_URL = os.getenv("ANYROUTER_BASE_URL", "https://anyrouter.top")
 
 # 主题池与对应 Furniturebox UK 产品线及 Unsplash 搜索关键词
 topics = [
