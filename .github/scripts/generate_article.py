@@ -5,11 +5,7 @@ import random
 import re
 import time
 import requests
-from openai import OpenAI
-
-# AnyRouter 中转站配置
-ANYROUTER_API_KEY = os.getenv("ANYROUTER_API_KEY")
-ANYROUTER_BASE_URL = os.getenv("ANYROUTER_BASE_URL", "https://anyrouter.top")
+from google import genai
 
 # 主题池与对应 Furniturebox UK 产品线及 Unsplash 搜索关键词
 topics = [
@@ -78,55 +74,47 @@ def fetch_unsplash_image(query, output_path, access_key):
     except Exception as e:
         print(f"ℹ️ 从 Unsplash 获取图片失败 ({e})，使用默认占位图。")
     return False
-    
-def generate_article_with_claude(client, prompt, max_retries=3):
+
+def generate_article_with_gemini(client, prompt, max_retries=3):
     """
-    使用 AnyRouter 上的 Claude 模型生成文章，自带重试机制
+    使用 Google Gemini API 生成文章，带重试与降级机制
     """
-    # 包含了精简别名与全称，确保兼容 AnyRouter 的不同分组映射
-    models_to_try = [
-        "claude-3-5-sonnet",            # 别名（最常兼容）
-        "claude-3-7-sonnet",            # 别名
-        "claude-3-5-sonnet-20241022",   # 完整型号
-        "claude-3-7-sonnet-20250219",   # 完整型号
-        "claude-3-5-haiku-20241022",    # 修正拼写后的 Haiku
-        "claude-3-5-haiku",             # Haiku 别名
-    ]
+    models_to_try = ['gemini-2.5-flash', 'gemini-2.0-flash']
 
     for attempt in range(1, max_retries + 1):
         for model_name in models_to_try:
             try:
-                print(f"正在尝试使用 AnyRouter Claude 模型生成文章 (第 {attempt} 轮尝试): {model_name} ...")
-                response = client.chat.completions.create(
+                print(f"正在尝试使用 Gemini 生成文章 (第 {attempt} 轮尝试): {model_name} ...")
+                response = client.models.generate_content(
                     model=model_name,
-                    messages=[
-                        {"role": "user", "content": prompt}
-                    ],
-                    temperature=0.7
+                    contents=prompt
                 )
-                content = response.choices[0].message.content
-                if content:
-                    return content
+                if response.text:
+                    return response.text
             except Exception as e:
                 err_str = str(e)
-                print(f"⚠️ 模型 {model_name} 响应异常: {err_str}")
-                time.sleep(2)
+                if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
+                    wait_time = attempt * 10
+                    print(f"⚠️ {model_name} 触发限流 (429)，等待 {wait_time} 秒...")
+                    time.sleep(wait_time)
+                elif "503" in err_str or "UNAVAILABLE" in err_str:
+                    wait_time = attempt * 8
+                    print(f"⚠️ {model_name} 服务繁忙 (503)，等待 {wait_time} 秒...")
+                    time.sleep(wait_time)
+                else:
+                    print(f"⚠️ {model_name} 报错: {e}")
 
-    raise RuntimeError("所有 Claude 模型生成尝试均失败，请检查 AnyRouter API Key 额度与节点状态。")
+    raise RuntimeError("所有 Gemini 模型生成尝试均失败，请检查 GEMINI_API_KEY 是否存在及额度情况。")
 
 def generate_and_save():
-    if not ANYROUTER_API_KEY:
-        print("错误: 未找到 ANYROUTER_API_KEY 环境变量")
-        sys.exit(1)
-
+    api_key = os.getenv("GEMINI_API_KEY")
     unsplash_key = os.getenv("UNSPLASH_ACCESS_KEY")
 
-    # 初始化 AnyRouter OpenAI SDK Client
-    client = OpenAI(
-        api_key=ANYROUTER_API_KEY,
-        base_url=ANYROUTER_BASE_URL
-    )
+    if not api_key:
+        print("错误: 未找到 GEMINI_API_KEY 环境变量")
+        sys.exit(1)
 
+    client = genai.Client(api_key=api_key)
     chosen = random.choice(topics)
     today = datetime.date.today().strftime("%Y-%m-%d")
 
@@ -166,7 +154,7 @@ def generate_and_save():
     Word count: 1200 - 1500 words. Return standard Markdown directly.
     """
 
-    full_content = generate_article_with_claude(client, prompt)
+    full_content = generate_article_with_gemini(client, prompt)
 
     # 提取 Front Matter 标题
     title_match = re.search(r'^title:\s*["\']?(.*?)["\']?\s*$', full_content, re.MULTILINE)
