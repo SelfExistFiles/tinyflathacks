@@ -137,8 +137,8 @@ def ensure_front_matter(content, default_title, default_date, thumbnail_url):
                     key, val = line.split(':', 1)
                     fm_dict[key.strip()] = val.strip()
             
-            # 覆盖或补充关键字段（确保 title 使用 default_title）
-            fm_dict['title'] = f'"{default_title}"'  # 确保带引号
+            # 覆盖或补充关键字段
+            fm_dict['title'] = f'"{default_title}"'
             fm_dict['date'] = f'"{default_date}"'
             fm_dict['thumbnail'] = f'"{thumbnail_url}"'
             if 'draft' not in fm_dict:
@@ -150,7 +150,6 @@ def ensure_front_matter(content, default_title, default_date, thumbnail_url):
             for key in ordered_keys:
                 if key in fm_dict:
                     val = fm_dict[key]
-                    # 处理 categories 和 tags
                     if key in ['categories', 'tags']:
                         val_str = val.strip('"\'')
                         if val_str.startswith('[') and val_str.endswith(']'):
@@ -159,7 +158,6 @@ def ensure_front_matter(content, default_title, default_date, thumbnail_url):
                             items = [item.strip().strip('"\'') for item in val_str.split(',')]
                             new_fm_lines.append(f'{key}: [{", ".join(items)}]')
                     else:
-                        # 确保字符串值被引号包裹（除非是布尔值或数字）
                         if isinstance(val, str) and val not in ['true', 'false'] and not val.isdigit():
                             if not (val.startswith('"') or val.startswith("'")):
                                 val = f'"{val}"'
@@ -189,15 +187,9 @@ def generate_and_save():
     chosen = random.choice(topics)
     today = datetime.date.today().strftime("%Y-%m-%d")
 
-    # 修复图片路径：确保 static/images 目录存在，且路径正确
-    img_dir = "static"
-    os.makedirs(img_dir, exist_ok=True)
-    img_filename = f"{img_dir}/{chosen['title']}-{today}.jpg"
-    img_path = f"{chosen['title']}-{today}.jpg"
-
-    image_generated = fetch_unsplash_image(chosen["unsplash_query"], img_filename, unsplash_key)
-    thumbnail_url = f"/{img_path}" if image_generated else "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
-
+    # 先生成文章（使用占位图 URL，因为此时还不知道 AI 生成的标题）
+    placeholder_thumbnail = "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
+    
     prompt = f"""
 Please write a blog post in native British English for tinyflathacks.co.uk.
 
@@ -219,10 +211,10 @@ Please write a blog post in native British English for tinyflathacks.co.uk.
    description: "..."
    categories: ["Living Room"]
    tags: ["Small Spaces"]
-   thumbnail: "{thumbnail_url}"
+   thumbnail: "{placeholder_thumbnail}"
    draft: false
    ---
-2. Intro & Before: The Cluttered Nightmare (Include markdown image `![Before Makeover]({thumbnail_url})`)
+2. Intro & Before: The Cluttered Nightmare (Include markdown image `![Before Makeover]({placeholder_thumbnail})`)
 3. The Fix & Furniturebox Discoveries
 4. After: How It Changed Our Daily Life
 5. Budget Breakdown & Final Verdict
@@ -232,12 +224,22 @@ Word count: 1200 - 1500 words. Return standard Markdown directly.
 
     full_content = generate_article_with_gemini(client, prompt)
 
-    # 提取 AI 生成的标题（用于文件名）
+    # 提取 AI 生成的标题（用于文件名和图片文件名）
     title_match = re.search(r'^title:\s*["\']?(.*?)["\']?\s*$', full_content, re.MULTILINE)
     raw_title = title_match.group(1).strip() if title_match else chosen['title']
     file_slug = slugify(raw_title)
 
-    # 修正 Front Matter（传入提取到的标题，以确保一致性）
+    # ✅ 使用 AI 生成的标题来生成图片文件名
+    img_dir = "static"
+    os.makedirs(img_dir, exist_ok=True)
+    img_filename = f"{img_dir}/{file_slug}-{today}.jpg"
+    img_path = f"{file_slug}-{today}.jpg"
+
+    # 获取 Unsplash 图片并保存
+    image_generated = fetch_unsplash_image(chosen["unsplash_query"], img_filename, unsplash_key)
+    thumbnail_url = f"/{img_path}" if image_generated else placeholder_thumbnail
+
+    # 用正确的缩略图 URL 更新 Front Matter
     full_content = ensure_front_matter(
         full_content,
         raw_title,
@@ -245,7 +247,7 @@ Word count: 1200 - 1500 words. Return standard Markdown directly.
         thumbnail_url
     )
 
-    # 保存文件
+    # 保存文章文件
     filename = f"content/posts/{file_slug}.md"
     os.makedirs(os.path.dirname(filename), exist_ok=True)
 
@@ -253,6 +255,9 @@ Word count: 1200 - 1500 words. Return standard Markdown directly.
         f.write(full_content)
 
     print(f"✅ 文章与配图处理完成，成功保存至: {filename}")
+    print(f"   📄 文章: {filename}")
+    print(f"   🖼️ 图片: {img_filename}")
+    print(f"   🔗 缩略图 URL: {thumbnail_url}")
 
 if __name__ == "__main__":
     generate_and_save()
