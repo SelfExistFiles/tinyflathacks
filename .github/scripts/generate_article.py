@@ -137,10 +137,10 @@ def ensure_front_matter(content, default_title, default_date, thumbnail_url):
                     key, val = line.split(':', 1)
                     fm_dict[key.strip()] = val.strip()
             
-            # 覆盖或补充关键字段
-            fm_dict['title'] = default_title
-            fm_dict['date'] = default_date
-            fm_dict['thumbnail'] = thumbnail_url
+            # 覆盖或补充关键字段（确保 title 使用 default_title）
+            fm_dict['title'] = f'"{default_title}"'  # 确保带引号
+            fm_dict['date'] = f'"{default_date}"'
+            fm_dict['thumbnail'] = f'"{thumbnail_url}"'
             if 'draft' not in fm_dict:
                 fm_dict['draft'] = 'false'
             
@@ -169,9 +169,9 @@ def ensure_front_matter(content, default_title, default_date, thumbnail_url):
     
     # 如果没有 Front Matter，直接创建新的
     return f'''---
-title: {default_title}
-date: {default_date}
-thumbnail: {thumbnail_url}
+title: "{default_title}"
+date: "{default_date}"
+thumbnail: "{thumbnail_url}"
 draft: false
 ---
 
