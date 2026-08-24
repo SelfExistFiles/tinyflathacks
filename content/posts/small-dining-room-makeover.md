@@ -1,11 +1,4 @@
 ---
-title: small-dining-room-makeover
-date: 2026-08-24
-thumbnail: https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800
-draft: false
----
-
-```yaml
 title: "How We Finally Kicked Our Tiny Flat's Dining Nightmare to the Kerb!"
 date: "2026-08-24"
 description: "Fed up with a cluttered dining corner that was more 'storage unit' than 'supper spot'? We transformed our poky Manchester flat using Furniturebox's clever extendable dining table and stylish chairs. Read how we sorted our space, kept our pennies, and actually started hosting again!"
