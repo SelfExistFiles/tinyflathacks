@@ -141,6 +141,7 @@ def ensure_front_matter(content, default_title, default_date, thumbnail_url):
     # 否则用 --- 包裹
     return '---\n' + '\n'.join(front_matter_lines) + '\n---\n\n' + '\n'.join(normal_content_lines).lstrip()
 
+
 def generate_and_save():
     api_key = os.getenv("GEMINI_API_KEY")
     unsplash_key = os.getenv("UNSPLASH_ACCESS_KEY")
@@ -191,6 +192,7 @@ def generate_and_save():
 
     full_content = generate_article_with_gemini(client, prompt)
 
+
     # 修正 Front Matter 格式
     full_content = ensure_front_matter(
         full_content, 
@@ -198,6 +200,7 @@ def generate_and_save():
         today,
         thumbnail_url
     )
+
 
     # 提取 Front Matter 标题
     title_match = re.search(r'^title:\s*["\']?(.*?)["\']?\s*$', full_content, re.MULTILINE)
