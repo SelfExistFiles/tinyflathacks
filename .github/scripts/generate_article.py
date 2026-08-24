@@ -3,34 +3,36 @@ import sys
 import datetime
 import random
 import re
+import time
+import requests
 from google import genai
-from google.genai import types
 
-# 主题池与对应 Furniturebox UK 产品线
+# 主题池与对应 Furniturebox UK 产品线及 Unsplash 搜索关键词
 topics = [
     {
         "title": "small-dining-room-makeover",
         "desc": "小户型餐厅/客厅角落改造，使用 Furniturebox 的折叠/可伸缩餐桌",
         "furniturebox_products": ["Chelsea White Extendable Dining Table", "Novara Velvet Chairs", "Roma Glass Table Set"],
-        "prompt_concept": "A bright UK apartment dining corner with a chic extendable dining table and velvet chairs, warm natural light from sash windows, modern stylish Scandinavian-UK interior, photorealistic."
+        "unsplash_query": "scandinavian dining room table apartment"
     },
     {
         "title": "compact-living-room-zones",
         "desc": "利用 Furniturebox 的小巧沙发与嵌套茶几，在小客厅划分工作与放松区域",
         "furniturebox_products": ["Santorini Velvet Sofa", "Lucia Nest of Tables", "Sienna High Gloss Coffee Table"],
-        "prompt_concept": "A compact modern British living room with a sleek velvet sofa and a wooden nest of coffee tables, aesthetic UK home decor, photorealistic 8k."
+        "unsplash_query": "modern compact living room sofa"
     },
     {
         "title": "balcony-and-patio-hacks",
         "desc": "英国小阳台/狭长后院改造，利用 Furniturebox 户外 Bistro 套装实现早晨咖啡自由",
         "furniturebox_products": ["Barcelona Rattan Bistro Set", "Milan Folding Garden Set"],
-        "prompt_concept": "A charming small London flat balcony with a rattan bistro table and two folding chairs, fairy lights, potted plants, overlooking brick terraced houses."
+        "unsplash_query": "small balcony bistro set apartment"
     }
 ]
 
 def slugify(title):
-    """将标题转换为适合文件名的 slug"""
+    """将标题转换为干净安全的 ASCII 文件名 slug"""
     slug = title.lower()
+    slug = slug.replace('²', '2').replace('³', '3')
     slug = re.sub(r'[^\w\s-]', '', slug)
     slug = re.sub(r'[-\s]+', '-', slug)
     slug = slug.strip('-')
@@ -38,35 +40,111 @@ def slugify(title):
         slug = slug[:60].rstrip('-')
     return slug
 
-def generate_image_with_gemini(client, prompt_text, output_path):
+def fetch_unsplash_image(query, output_path, access_key):
     """
-    使用 Gemini / Imagen 模型生成真实图片，带完备容错
+    使用 Unsplash 官方 API Key 随机获取高质量符合关键词的配图并保存到本地
     """
-    print(f"🎨 正在使用 Gemini 生成图片: {prompt_text[:50]}...")
+    print(f"🖼️ 正在从 Unsplash 检索符合关键词 '{query}' 的配图...")
+    if not access_key:
+        print("⚠️ 未配置 UNSPLASH_ACCESS_KEY，降级使用网络占位图。")
+        return False
+
+    url = "https://api.unsplash.com/photos/random"
+    headers = {
+        "Authorization": f"Client-ID {access_key}"
+    }
+    params = {
+        "query": query,
+        "orientation": "landscape"
+    }
+
     try:
-        # 使用最新的 imagen-3.0-generate-001 或通用生成接口
-        result = client.models.generate_images(
-            model='imagen-3.0-generate-001',
-            prompt=prompt_text,
-            config=types.GenerateImagesConfig(
-                number_of_images=1,
-                aspect_ratio="16:9",
-                output_mime_type="image/jpeg"
-            )
-        )
-        
-        if result and hasattr(result, 'generated_images') and result.generated_images:
-            for generated_image in result.generated_images:
-                with open(output_path, "wb") as f:
-                    f.write(generated_image.image.image_bytes)
-                print(f"✅ 图片生成成功并保存至: {output_path}")
-                return True
+        response = requests.get(url, headers=headers, params=params, timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            image_url = data["urls"]["regular"]
+            
+            img_data = requests.get(image_url, timeout=15).content
+            with open(output_path, "wb") as f:
+                f.write(img_data)
+            print(f"✅ Unsplash 配图成功保存至: {output_path}")
+            return True
+        else:
+            print(f"⚠️ Unsplash API 返回错误状态码: {response.status_code}, 响应: {response.text}")
     except Exception as e:
-        print(f"⚠️ 图片生成未成功 ({e})，自动回退至默认占位图，不影响文章生成。")
+        print(f"ℹ️ 从 Unsplash 获取图片失败 ({e})，使用默认占位图。")
     return False
+
+def generate_article_with_gemini(client, prompt, max_retries=3):
+    """
+    使用 Google Gemini API 生成文章，带重试与降级机制
+    """
+    models_to_try = ['gemini-2.5-flash', 'gemini-2.0-flash']
+
+    for attempt in range(1, max_retries + 1):
+        for model_name in models_to_try:
+            try:
+                print(f"正在尝试使用 Gemini 生成文章 (第 {attempt} 轮尝试): {model_name} ...")
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=prompt
+                )
+                if response.text:
+                    return response.text
+            except Exception as e:
+                err_str = str(e)
+                if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
+                    wait_time = attempt * 10
+                    print(f"⚠️ {model_name} 触发限流 (429)，等待 {wait_time} 秒...")
+                    time.sleep(wait_time)
+                elif "503" in err_str or "UNAVAILABLE" in err_str:
+                    wait_time = attempt * 8
+                    print(f"⚠️ {model_name} 服务繁忙 (503)，等待 {wait_time} 秒...")
+                    time.sleep(wait_time)
+                else:
+                    print(f"⚠️ {model_name} 报错: {e}")
+
+    raise RuntimeError("所有 Gemini 模型生成尝试均失败，请检查 GEMINI_API_KEY 是否存在及额度情况。")
+
+
+def ensure_front_matter(content, default_title, default_date, thumbnail_url):
+    """确保 Front Matter 被 --- 包裹"""
+    # 如果开头已经有 ---，则跳过
+    if content.strip().startswith('---'):
+        return content
+    
+    # 尝试提取第一段 YAML 内容（可能没有 ---）
+    lines = content.split('\n')
+    front_matter_lines = []
+    normal_content_lines = []
+    in_front_matter = False
+    
+    # 简单检测：如果第一行是 title: 开头，则认为进入了 Front Matter
+    if lines and re.match(r'^\s*title\s*:', lines[0], re.I):
+        in_front_matter = True
+    
+    for i, line in enumerate(lines):
+        if in_front_matter:
+            # 如果遇到空行且已经收集了标题和日期，则认为 Front Matter 结束
+            if line.strip() == '' and i > 0:
+                in_front_matter = False
+                normal_content_lines.append(line)
+                continue
+            front_matter_lines.append(line)
+        else:
+            normal_content_lines.append(line)
+    
+    # 如果根本没有检测到 Front Matter，直接在最前面插入带 --- 的空白格式
+    if not front_matter_lines:
+        return f"---\ntitle: {default_title}\ndate: {default_date}\nthumbnail: {thumbnail_url}\ndraft: false\n---\n\n{content}"
+    
+    # 否则用 --- 包裹
+    return '---\n' + '\n'.join(front_matter_lines) + '\n---\n\n' + '\n'.join(normal_content_lines).lstrip()
 
 def generate_and_save():
     api_key = os.getenv("GEMINI_API_KEY")
+    unsplash_key = os.getenv("UNSPLASH_ACCESS_KEY")
+
     if not api_key:
         print("错误: 未找到 GEMINI_API_KEY 环境变量")
         sys.exit(1)
@@ -74,86 +152,70 @@ def generate_and_save():
     client = genai.Client(api_key=api_key)
     chosen = random.choice(topics)
     today = datetime.date.today().strftime("%Y-%m-%d")
-    
-    # 设定生成图片的存储路径
+
     img_filename = f"static/images/{chosen['title']}-{today}.jpg"
     os.makedirs("static/images", exist_ok=True)
-    
-    # 1. 生成图片（失败自动降级）
-    image_generated = generate_image_with_gemini(client, chosen["prompt_concept"], img_filename)
+
+    image_generated = fetch_unsplash_image(chosen["unsplash_query"], img_filename, unsplash_key)
     thumbnail_url = f"/{img_filename}" if image_generated else "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
 
-    # 2. 生成文章（使用官方推荐的最新模型 gemini-3.6-flash）
     prompt = f"""
-    请以 tinyflathacks.co.uk 的风格写一篇英文博客文章。
+    Please write a blog post in native British English for tinyflathacks.co.uk.
 
-    **文章主题：** {chosen['desc']}
-    **重点提及的本地家具品牌与产品：** 参考 Furniturebox.co.uk 的产品（如 {', '.join(chosen['furniturebox_products'])}），突出其“Next Day Free UK Delivery”、“Budget-Friendly”和“Space-Saving Designs”的特点。
+    **Topic:** {chosen['desc']}
+    **Promoted Brand & Products:** Reference Furniturebox.co.uk items ({', '.join(chosen['furniturebox_products'])}), highlighting Next Day Free UK Delivery, budget-friendliness, and space-saving cleverness.
 
-    **写作风格要求（必须严格遵守以去除 AI 味）：**
-    1. 用第一人称 "I" 或 "we" 写作，像一个住在大不列颠（如 London, Manchester 或 Bristol）的真实租房者/小户型屋主在分享亲身经历。
-    2. 使用英式拼写（organise 而不是 organize, colour 而不是 color, flat 而不是 apartment, cosy 而不是 cozy）。
-    3. 语言极度口语化且地道，自然嵌入以下英式表达：
-       - "proper useful" 或 "proper bargain"
-       - "faff"（指麻烦事，如 "assembling flat-pack furniture can be a bit of a faff"）
-       - "honestly" 或 "to be fair"
-       - "a bit of a nightmare"
-       - "sorted"
-    4. 带有适度的英式自嘲幽默（比如吐槽英国阴雨天晾衣服、卷尺量错尺寸、搬运大体积家具卡在狭窄楼道等）。
-    5. **绝对禁止**使用典型 AI 套话（如 "delve into", "unleash", "realm", "tapestry", "game-changer"）。
-    6. 包含具体真实的数据（如房间具体尺寸 35m², 花费金额 £250, 搬运时间等）。
+    **Tone & Persona (STRICT):**
+    1. Write in 1st person ("I" or "we") as a genuine UK renter living in London, Manchester, or Bristol.
+    2. Use British English spelling throughout (organise, colour, flat, cosy, bloody, sorted).
+    3. Naturally use slang like "proper useful", "a bit of a faff", "honestly", "sorted", "nightmare".
+    4. Add witty British self-deprecation about tight staircases, rainy weather, or assembly failures.
+    5. NO AI buzzwords (delve, unleash, realm, tapestry, game-changer).
 
-    **内容结构要求：**
-    1. Front Matter（YAML 格式）：
-       - title:（必须有吸引力、像真实博客，例如 "How We Squeezed a Proper 4-Seater Dining Area into Our 35m² London Flat"）
-       - date: "{today}"
-       - description
-       - categories
-       - tags
-       - thumbnail: "{thumbnail_url}"
-       - draft: false
-    2. 引言：吐槽空间太小的痛点，引发英国租房党共鸣。
-    3. "Before: The Cluttered Nightmare"：改造前的惨状（附带 Markdown 图片占位符 `![Before Makeover]({thumbnail_url})`）。
-    4. "The Fix & Furniturebox Discoveries"：如何挑选 Furniturebox.co.uk 的家具（提到次日送达和性价比）。
-    5. "After: How It Changed Our Daily Life"：改造后的体验与空间对比。
-    6. "Budget & Final Verdict"：花费明细清单与实用小建议。
+    **Structure:**
+    1. Front Matter (YAML format):
+       title: "How We..." (must sound authentic)
+       date: "{today}"
+       description: "..."
+       categories: ["Living Room"]
+       tags: ["Small Spaces"]
+       thumbnail: "{thumbnail_url}"
+       draft: false
+    2. Intro & Before: The Cluttered Nightmare (Include markdown image `![Before Makeover]({thumbnail_url})`)
+    3. The Fix & Furniturebox Discoveries
+    4. After: How It Changed Our Daily Life
+    5. Budget Breakdown & Final Verdict
 
-    **字数要求：** 1200-1500 词
-
-    请直接输出标准的 Markdown 内容。
+    Word count: 1200 - 1500 words. Return standard Markdown directly.
     """
 
-    print(f"正在生成文章: {chosen['title']} ...")
-    try:
-        response = client.models.generate_content(
-            model='gemini-3.6-flash',
-            contents=prompt
-        )
-        full_content = response.text
-    except Exception as e:
-        print(f"⚠️ gemini-3.6-flash 遇到问题，尝试回退模型 gemini-3.1-flash-lite: {e}")
-        response = client.models.generate_content(
-            model='gemini-3.1-flash-lite',
-            contents=prompt
-        )
-        full_content = response.text
+    full_content = generate_article_with_gemini(client, prompt)
 
-    # 从生成文章中提取 title 作为文件名
-    title_match = re.search(r'^title:\s*"(.+?)"', full_content, re.MULTILINE)
-    if title_match:
-        raw_title = title_match.group(1)
+    # 修正 Front Matter 格式
+    full_content = ensure_front_matter(
+        full_content, 
+        raw_title if 'raw_title' in locals() else chosen['title'],
+        today,
+        thumbnail_url
+    )
+
+    # 提取 Front Matter 标题
+    title_match = re.search(r'^title:\s*["\']?(.*?)["\']?\s*$', full_content, re.MULTILINE)
+    if title_match and title_match.group(1):
+        raw_title = title_match.group(1).strip()
         file_slug = slugify(raw_title)
         filename = f"content/posts/{file_slug}.md"
-        print(f"📝 提取到标题: {raw_title}")
+        print(f"📝 成功提取标题: {raw_title}")
     else:
         filename = f"content/posts/{chosen['title']}.md"
+        print("⚠️ 未找到明确标题，使用默认主题名作文件名")
 
     os.makedirs(os.path.dirname(filename), exist_ok=True)
-    
+
     with open(filename, "w", encoding="utf-8") as f:
         f.write(full_content)
-        
-    print(f"✅ 文章与配图处理完成并保存至: {filename}")
+
+    print(f"✅ 文章与配图处理完成，成功保存至: {filename}")
 
 if __name__ == "__main__":
     generate_and_save()
