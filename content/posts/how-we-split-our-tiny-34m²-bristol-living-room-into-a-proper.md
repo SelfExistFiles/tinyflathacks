@@ -1,4 +1,3 @@
-```yaml
 ---
 title: "How We Split Our Tiny 34m² Bristol Living Room into a Proper Office and Relax Zone for Under £400"
 date: "2026-08-19"
@@ -8,7 +7,6 @@ tags: ["Furniturebox", "Small Space Living", "UK Renting", "Budget Decor"]
 thumbnail: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
 draft: false
 ---
-```
 
 If you live in a rented UK flat, you already know the drill. You sign the lease on a dreary Tuesday, move in three suitcases and five blue IKEA bags, and suddenly realize your entire living space is roughly the size of a disabled parking bay. 
 

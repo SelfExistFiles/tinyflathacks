@@ -1,4 +1,4 @@
-```yaml
+---
 title: "How We Finally Made Our Tiny Balcony A Proper Coffee Haven (Even With All The Rain)"
 date: "2026-08-23"
 description: "Fed up with our neglected, cluttered balcony? We transformed our tiny outdoor space into a morning coffee retreat with clever hacks and budget-friendly finds from Furniturebox.co.uk. No more faff, just pure bliss, even in a small flat!"

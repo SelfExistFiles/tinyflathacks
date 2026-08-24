@@ -1,4 +1,4 @@
-```yaml
+---
 title: "How We Finally Conquered Our Tiny Balcony (and Got Our Morning Coffee Back!)"
 date: "2026-08-24"
 description: "Fed up with your cramped British balcony or narrow back garden? We're sharing how we transformed our neglected outdoor space in Bristol into a proper morning coffee spot with clever, budget-friendly finds from Furniturebox.co.uk. Think space-saving bistro sets and next-day delivery – no more sad, cluttered corners!"
@@ -6,7 +6,7 @@ categories: ["Outdoor Living", "Small Spaces"]
 tags: ["Balcony Hacks", "Patio Ideas", "Outdoor Furniture", "Renter Friendly", "Tiny Flat Hacks", "Furniturebox"]
 thumbnail: "/static/images/balcony-and-patio-hacks-2026-08-24.jpg"
 draft: false
-```
+---
 
 Alright, fellow tiny-flat-dwellers! Let me paint you a picture you’ll probably recognise. My partner, Liam, and I live in a lovely, if slightly snug, two-bed flat in Bristol. We love it, honestly. Great location, decent rent (for Bristol, anyway), and only a *minor* battle with the neighbour over bin collection day. But for years, there was one corner of our little home that brought us nothing but profound sadness: the balcony.
 
