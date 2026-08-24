@@ -190,7 +190,7 @@ def generate_and_save():
     today = datetime.date.today().strftime("%Y-%m-%d")
 
     # 修复图片路径：确保 static/images 目录存在，且路径正确
-    img_dir = "static/images"
+    img_dir = "static"
     os.makedirs(img_dir, exist_ok=True)
     img_filename = f"{img_dir}/{chosen['title']}-{today}.jpg"
     img_path = f"{chosen['title']}-{today}.jpg"
