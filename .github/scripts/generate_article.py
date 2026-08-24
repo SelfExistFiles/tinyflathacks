@@ -190,10 +190,13 @@ def generate_and_save():
     today = datetime.date.today().strftime("%Y-%m-%d")
 
     # 修复图片路径：确保 static/images 目录存在，且路径正确
-    img_filename = f"/{chosen['title']}-{today}.jpg"
+    img_dir = "static/images"
+    os.makedirs(img_dir, exist_ok=True)
+    img_filename = f"{img_dir}/{chosen['title']}-{today}.jpg"
+    img_path = f"{chosen['title']}-{today}.jpg"
 
     image_generated = fetch_unsplash_image(chosen["unsplash_query"], img_filename, unsplash_key)
-    thumbnail_url = f"/{img_filename}" if image_generated else "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
+    thumbnail_url = f"/{img_path}" if image_generated else "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
 
     prompt = f"""
 Please write a blog post in native British English for tinyflathacks.co.uk.
