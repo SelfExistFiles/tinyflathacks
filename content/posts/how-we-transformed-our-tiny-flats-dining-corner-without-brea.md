@@ -4,7 +4,7 @@ date: "2026-08-24"
 description: "From cluttered chaos to a proper cosy dining space – see how we revamped our small living room corner with Furniturebox's clever extendable table and stylish chairs, all on a tight budget!"
 categories: ["Living Room", "Dining Room"]
 tags: ["Small Spaces", "Dining Room", "Furniturebox", "Extendable Table", "Flat Living", "Budget Decor", "Home Renovation"]
-thumbnail: "/static/images/small-dining-room-makeover-2026-08-24.jpg"
+thumbnail: "/small-dining-room-makeover-2026-08-24.jpg"
 draft: false
 ---
 
@@ -18,7 +18,7 @@ Eating a proper meal together was a rare treat, usually reserved for actual rest
 
 Whenever friends came over – which, let's face it, wasn't often if it involved food – it was a whole song and dance of shuffling furniture, borrowing chairs from the bedroom, and still ending up with someone eating off a stack of books. It was a bloody nightmare, honestly. We longed for a dedicated space, somewhere we could sit and eat, play a board game, or even just have a coffee without feeling like we were perched on a tightrope. But how do you fit a dining table into a space that barely fits a half-decent TV?
 
-![Before Makeover](/static/images/small-dining-room-makeover-2026-08-24.jpg)
+![Before Makeover](/small-dining-room-makeover-2026-08-24.jpg)
 
 That photo above? Yeah, that was our reality. A bit grim, wasn't it? The sheer amount of *stuff* we had accumulated in that corner was astonishing, and it made the whole flat feel even smaller and more cluttered than it actually was. We knew something had to give. We couldn't afford a bigger flat, but we *could* make the one we had work harder for us.
 
