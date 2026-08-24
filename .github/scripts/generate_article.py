@@ -106,41 +106,76 @@ def generate_article_with_gemini(client, prompt, max_retries=3):
 
     raise RuntimeError("所有 Gemini 模型生成尝试均失败，请检查 GEMINI_API_KEY 是否存在及额度情况。")
 
-
 def ensure_front_matter(content, default_title, default_date, thumbnail_url):
-    """确保 Front Matter 被 --- 包裹"""
-    # 如果开头已经有 ---，则跳过
-    if content.strip().startswith('---'):
-        return content
+    """
+    确保内容开头只有一段用 --- 包裹的 Front Matter
+    如果已有 Front Matter，则提取并修正；如果没有，则新建。
+    """
+    content = content.lstrip()
     
-    # 尝试提取第一段 YAML 内容（可能没有 ---）
-    lines = content.split('\n')
-    front_matter_lines = []
-    normal_content_lines = []
-    in_front_matter = False
+    # 如果开头有 ---，提取第一段 Front Matter
+    if content.startswith('---'):
+        lines = content.splitlines()
+        # 找到第二个 --- 的位置
+        end_index = -1
+        for i in range(1, len(lines)):
+            if lines[i].strip() == '---':
+                end_index = i
+                break
+        
+        if end_index != -1:
+            # 提取 Front Matter 内容（去掉第一行和最后一行 ---）
+            fm_lines = lines[1:end_index]
+            # 剩余内容作为正文
+            body_lines = lines[end_index+1:]
+            body = '\n'.join(body_lines).lstrip()
+            
+            # 构建 Front Matter 字典
+            fm_dict = {}
+            for line in fm_lines:
+                if ':' in line:
+                    key, val = line.split(':', 1)
+                    fm_dict[key.strip()] = val.strip()
+            
+            # 覆盖或补充关键字段
+            fm_dict['title'] = default_title
+            fm_dict['date'] = default_date
+            fm_dict['thumbnail'] = thumbnail_url
+            if 'draft' not in fm_dict:
+                fm_dict['draft'] = 'false'
+            
+            # 重新拼接 Front Matter（按固定顺序）
+            ordered_keys = ['title', 'date', 'description', 'categories', 'tags', 'thumbnail', 'draft']
+            new_fm_lines = []
+            for key in ordered_keys:
+                if key in fm_dict:
+                    val = fm_dict[key]
+                    # 处理 categories 和 tags
+                    if key in ['categories', 'tags']:
+                        val_str = val.strip('"\'')
+                        if val_str.startswith('[') and val_str.endswith(']'):
+                            new_fm_lines.append(f'{key}: {val_str}')
+                        else:
+                            items = [item.strip().strip('"\'') for item in val_str.split(',')]
+                            new_fm_lines.append(f'{key}: [{", ".join(items)}]')
+                    else:
+                        # 确保字符串值被引号包裹（除非是布尔值或数字）
+                        if isinstance(val, str) and val not in ['true', 'false'] and not val.isdigit():
+                            if not (val.startswith('"') or val.startswith("'")):
+                                val = f'"{val}"'
+                        new_fm_lines.append(f'{key}: {val}')
+            
+            return '---\n' + '\n'.join(new_fm_lines) + '\n---\n\n' + body
     
-    # 简单检测：如果第一行是 title: 开头，则认为进入了 Front Matter
-    if lines and re.match(r'^\s*title\s*:', lines[0], re.I):
-        in_front_matter = True
-    
-    for i, line in enumerate(lines):
-        if in_front_matter:
-            # 如果遇到空行且已经收集了标题和日期，则认为 Front Matter 结束
-            if line.strip() == '' and i > 0:
-                in_front_matter = False
-                normal_content_lines.append(line)
-                continue
-            front_matter_lines.append(line)
-        else:
-            normal_content_lines.append(line)
-    
-    # 如果根本没有检测到 Front Matter，直接在最前面插入带 --- 的空白格式
-    if not front_matter_lines:
-        return f"---\ntitle: {default_title}\ndate: {default_date}\nthumbnail: {thumbnail_url}\ndraft: false\n---\n\n{content}"
-    
-    # 否则用 --- 包裹
-    return '---\n' + '\n'.join(front_matter_lines) + '\n---\n\n' + '\n'.join(normal_content_lines).lstrip()
+    # 如果没有 Front Matter，直接创建新的
+    return f'''---
+title: {default_title}
+date: {default_date}
+thumbnail: {thumbnail_url}
+draft: false
+---
 
+{content}'''
 
 def generate_and_save():
     api_key = os.getenv("GEMINI_API_KEY")
@@ -154,65 +189,63 @@ def generate_and_save():
     chosen = random.choice(topics)
     today = datetime.date.today().strftime("%Y-%m-%d")
 
-    img_filename = f"/{chosen['title']}-{today}.jpg"
-    os.makedirs("static/images", exist_ok=True)
+    # 修复图片路径：确保 static/images 目录存在，且路径正确
+    img_dir = "static/images"
+    os.makedirs(img_dir, exist_ok=True)
+    img_filename = f"{img_dir}/{chosen['title']}-{today}.jpg"
 
     image_generated = fetch_unsplash_image(chosen["unsplash_query"], img_filename, unsplash_key)
     thumbnail_url = f"/{img_filename}" if image_generated else "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
 
     prompt = f"""
-    Please write a blog post in native British English for tinyflathacks.co.uk.
+Please write a blog post in native British English for tinyflathacks.co.uk.
 
-    **Topic:** {chosen['desc']}
-    **Promoted Brand & Products:** Reference Furniturebox.co.uk items ({', '.join(chosen['furniturebox_products'])}), highlighting Next Day Free UK Delivery, budget-friendliness, and space-saving cleverness.
+**Topic:** {chosen['desc']}
+**Promoted Brand & Products:** Reference Furniturebox.co.uk items ({', '.join(chosen['furniturebox_products'])}), highlighting Next Day Free UK Delivery, budget-friendliness, and space-saving cleverness.
 
-    **Tone & Persona (STRICT):**
-    1. Write in 1st person ("I" or "we") as a genuine UK renter living in London, Manchester, or Bristol.
-    2. Use British English spelling throughout (organise, colour, flat, cosy, bloody, sorted).
-    3. Naturally use slang like "proper useful", "a bit of a faff", "honestly", "sorted", "nightmare".
-    4. Add witty British self-deprecation about tight staircases, rainy weather, or assembly failures.
-    5. NO AI buzzwords (delve, unleash, realm, tapestry, game-changer).
+**Tone & Persona (STRICT):**
+1. Write in 1st person ("I" or "we") as a genuine UK renter living in London, Manchester, or Bristol.
+2. Use British English spelling throughout (organise, colour, flat, cosy, bloody, sorted).
+3. Naturally use slang like "proper useful", "a bit of a faff", "honestly", "sorted", "nightmare".
+4. Add witty British self-deprecation about tight staircases, rainy weather, or assembly failures.
+5. NO AI buzzwords (delve, unleash, realm, tapestry, game-changer).
 
-    **Structure:**
-    1. Front Matter (YAML format):
-       title: "How We..." (must sound authentic)
-       date: "{today}"
-       description: "..."
-       categories: ["Living Room"]
-       tags: ["Small Spaces"]
-       thumbnail: "{thumbnail_url}"
-       draft: false
-    2. Intro & Before: The Cluttered Nightmare (Include markdown image `![Before Makeover]({thumbnail_url})`)
-    3. The Fix & Furniturebox Discoveries
-    4. After: How It Changed Our Daily Life
-    5. Budget Breakdown & Final Verdict
+**Structure:**
+1. Front Matter (MUST be wrapped with --- on separate lines, YAML format):
+   ---
+   title: "How We..."
+   date: "{today}"
+   description: "..."
+   categories: ["Living Room"]
+   tags: ["Small Spaces"]
+   thumbnail: "{thumbnail_url}"
+   draft: false
+   ---
+2. Intro & Before: The Cluttered Nightmare (Include markdown image `![Before Makeover]({thumbnail_url})`)
+3. The Fix & Furniturebox Discoveries
+4. After: How It Changed Our Daily Life
+5. Budget Breakdown & Final Verdict
 
-    Word count: 1200 - 1500 words. Return standard Markdown directly.
-    """
+Word count: 1200 - 1500 words. Return standard Markdown directly.
+"""
 
     full_content = generate_article_with_gemini(client, prompt)
 
+    # 提取 AI 生成的标题（用于文件名）
+    title_match = re.search(r'^title:\s*["\']?(.*?)["\']?\s*$', full_content, re.MULTILINE)
+    raw_title = title_match.group(1).strip() if title_match else chosen['title']
+    file_slug = slugify(raw_title)
 
-    # 修正 Front Matter 格式
+    # 修正 Front Matter（传入提取到的标题，以确保一致性）
     full_content = ensure_front_matter(
-        full_content, 
-        raw_title if 'raw_title' in locals() else chosen['title'],
+        full_content,
+        raw_title,
         today,
         thumbnail_url
     )
 
-
-    # 提取 Front Matter 标题
-    title_match = re.search(r'^title:\s*["\']?(.*?)["\']?\s*$', full_content, re.MULTILINE)
-    if title_match and title_match.group(1):
-        raw_title = title_match.group(1).strip()
-        file_slug = slugify(raw_title)
-        filename = f"content/posts/{file_slug}.md"
-        print(f"📝 成功提取标题: {raw_title}")
-    else:
-        filename = f"content/posts/{chosen['title']}.md"
-        print("⚠️ 未找到明确标题，使用默认主题名作文件名")
-
+    # 保存文件
+    filename = f"content/posts/{file_slug}.md"
     os.makedirs(os.path.dirname(filename), exist_ok=True)
 
     with open(filename, "w", encoding="utf-8") as f:
