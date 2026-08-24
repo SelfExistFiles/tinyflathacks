@@ -14,7 +14,7 @@ Right, let's be honest. If you're living in a tiny flat in London, Manchester, o
 
 Picture this: my little one-bed flat in South London. It’s got character, sure, but not an inch to spare. The saving grace was a tiny, narrow balcony, just about big enough to squeeze a single person out there, maybe. But instead of being a little urban oasis, it had become the dumping ground for everything that didn't quite fit inside the flat.
 
-![Before Makeover](https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800)
+![Before Makeover](/how-i-finally-got-my-morning-coffee-fix-on-my-shoebox-balcon-2026-08-24.jpg)
 
 We're talking dusty, broken plant pots from a failed gardening attempt last summer, a rusty old watering can, a stack of newspapers I’d been meaning to recycle for months, and an assortment of general bric-a-brac that had somehow migrated outside. There was even a sad-looking milk crate doing duty as a makeshift "table" (read: wobbly junk-holder). It was depressing, honestly. Every time I looked at it, I just sighed.
 
