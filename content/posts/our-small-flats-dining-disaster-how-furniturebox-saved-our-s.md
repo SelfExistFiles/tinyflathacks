@@ -4,7 +4,7 @@ date: "2026-08-24"
 description: "From a cluttered corner to a proper dining space – come see how we transformed our tiny flat's dining nook in London, all thanks to some clever furniture from Furniturebox.co.uk. No more eating off our laps!"
 categories: ["Living Room"]
 tags: ["Small Spaces", "Dining Room", "Furniturebox", "Extendable Table", "Flat Hacks"]
-thumbnail: "/small-dining-room-makeover-2026-08-24.jpg"
+thumbnail: "/our-small-flats-dining-disaster-how-furniturebox-saved-our-s.jpg"
 draft: false
 ---
 
@@ -24,7 +24,7 @@ It was a true eyesore, a source of constant low-level stress, and honestly, a bi
 
 We kept saying we'd sort it, but life gets in the way, doesn't it? Then one particularly miserable, rainy Saturday afternoon (because, again, British weather), we looked at the chaos and decided enough was enough. We wanted a space that felt calm, organised, and actually, you know, *functional*.
 
-![Before Makeover](/small-dining-room-makeover-2026-08-24.jpg)
+![Before Makeover](/our-small-flats-dining-disaster-how-furniturebox-saved-our-s.jpg)
 *See? I wasn't exaggerating. A proper disaster zone, that was.*
 
 ### The Fix & Our Brilliant Furniturebox Discoveries
