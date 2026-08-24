@@ -154,7 +154,7 @@ def generate_and_save():
     chosen = random.choice(topics)
     today = datetime.date.today().strftime("%Y-%m-%d")
 
-    img_filename = f"static/images/{chosen['title']}-{today}.jpg"
+    img_filename = f"static/{chosen['title']}-{today}.jpg"
     os.makedirs("static/images", exist_ok=True)
 
     image_generated = fetch_unsplash_image(chosen["unsplash_query"], img_filename, unsplash_key)

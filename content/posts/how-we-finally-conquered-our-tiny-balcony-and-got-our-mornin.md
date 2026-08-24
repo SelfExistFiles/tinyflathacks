@@ -4,7 +4,7 @@ date: "2026-08-24"
 description: "Fed up with your cramped British balcony or narrow back garden? We're sharing how we transformed our neglected outdoor space in Bristol into a proper morning coffee spot with clever, budget-friendly finds from Furniturebox.co.uk. Think space-saving bistro sets and next-day delivery – no more sad, cluttered corners!"
 categories: ["Outdoor Living", "Small Spaces"]
 tags: ["Balcony Hacks", "Patio Ideas", "Outdoor Furniture", "Renter Friendly", "Tiny Flat Hacks", "Furniturebox"]
-thumbnail: "/static/images/balcony-and-patio-hacks-2026-08-24.jpg"
+thumbnail: "/balcony-and-patio-hacks-2026-08-24.jpg"
 draft: false
 ---
 
@@ -16,7 +16,7 @@ Our balcony wasn't exactly what you’d call 'spacious'. More of a 'walk-out led
 
 It was a proper eyesore. Every morning, I’d open the curtains, hoping for a glimmer of sunshine, and instead be greeted by this sad, forgotten space. The idea of having a morning coffee out there, breathing in some fresh (if slightly exhaust fume-tinged) Bristol air, felt like an impossible dream. We’d try to squeeze out there sometimes, balancing mugs precariously on the railing, but it was always a bit of a faff, frankly. The whole thing was just a big, depressing "before" photo waiting to happen.
 
-![Before Makeover](/static/images/balcony-and-patio-hacks-2026-08-24.jpg)
+![Before Makeover](/balcony-and-patio-hacks-2026-08-24.jpg)
 
 Honestly, it was a nightmare. We’d scroll through Pinterest, swooning over beautifully styled Parisian balconies and lush Mediterranean patios, feeling a pang of jealousy. We knew we deserved better than a glorified storage unit for our outdoor space. This year, after one particularly grey and miserable spring morning where I nearly tripped over a discarded paint tin trying to water the sad plant, we decided enough was enough. It was time for a tiny flat hack of epic proportions.
 

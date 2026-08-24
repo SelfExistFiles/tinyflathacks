@@ -4,7 +4,7 @@ date: "2026-08-23"
 description: "Fed up with our neglected, cluttered balcony? We transformed our tiny outdoor space into a morning coffee retreat with clever hacks and budget-friendly finds from Furniturebox.co.uk. No more faff, just pure bliss, even in a small flat!"
 categories: ["Living Room"]
 tags: ["Small Spaces", "Balcony Hacks", "Outdoor Living", "Furniturebox", "Bistro Set", "Small Flat Life"]
-thumbnail: "/static/images/balcony-and-patio-hacks-2026-08-23.jpg"
+thumbnail: "/balcony-and-patio-hacks-2026-08-23.jpg"
 draft: false
 ---
 
@@ -14,7 +14,7 @@ For ages, it was just... there. A sort of outdoor purgatory for neglected plant 
 
 We’d always talked about 'doing something' with it, especially as summer (or what passes for it in the UK) rolled around. The idea of having our morning coffee outside, even just for 15 minutes before the rush, felt like a distant, unattainable luxury. We’re renters, too, so anything we did had to be reversible, budget-friendly, and frankly, not a massive faff to put together. We've had our share of flatpack failures, trust me. There’s nothing quite like spending three hours on a Saturday afternoon trying to decipher instructions written for an IKEA elf, only to realise you've put a crucial piece on backwards. More than once, we've had to call in reinforcements (usually my dad, who's a wizard with an Allen key) to sort us out. The thought of adding more assembly woes to our lives just wasn’t appealing.
 
-![Before Makeover](/static/images/balcony-and-patio-hacks-2026-08-23.jpg)
+![Before Makeover](/balcony-and-patio-hacks-2026-08-23.jpg)
 
 ### The Cluttered Nightmare: Before We Got Our Act Together
 
