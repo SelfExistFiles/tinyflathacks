@@ -3,7 +3,7 @@ name: Auto Generate Hugo Article
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 9 * * *'  # 每天 UTC 08:00 自动触发运行
+    - cron: '0 9 * * *'  # 每天 UTC 09:00 自动触发
 
 jobs:
   generate-and-pr:
@@ -43,6 +43,7 @@ jobs:
           fi
 
       - name: Create Pull Request
+        id: cpr  # 添加了 id，方便后续步骤引用
         if: steps.check_changes.outputs.changes == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
@@ -61,3 +62,12 @@ jobs:
             content/posts/
             static/
           delete-branch: true
+
+      # ⭐ 新增：启用自动合并的步骤
+      - name: Enable Auto-Merge for this PR
+        if: steps.check_changes.outputs.changes == 'true'
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GH_PAT }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash  # 合并方式，可选 squash / merge / rebase
