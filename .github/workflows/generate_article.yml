@@ -71,3 +71,11 @@ jobs:
           token: ${{ secrets.GH_PAT }}
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
           merge-method: squash  # 合并方式，可选 squash / merge / rebase
+
+       # ⭐ 改为：创建 PR 后直接自动合并
+      - name: Auto Merge PR Directly
+        if: steps.check_changes.outputs.changes == 'true' && steps.cpr.outputs.pull-request-number
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --squash --delete-branch --admin
