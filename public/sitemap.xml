@@ -2,13 +2,73 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/tags/budget-decor/</loc>
+    <lastmod>2026-08-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/</loc>
+    <lastmod>2026-08-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/furniturebox/</loc>
+    <lastmod>2026-08-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/home-office/</loc>
+    <lastmod>2026-08-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/how-we-finally-sorted-our-tiny-flats-living-room-work-zone-b/</loc>
+    <lastmod>2026-08-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/living-room/</loc>
+    <lastmod>2026-08-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2026-08-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/renters/</loc>
+    <lastmod>2026-08-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/small-spaces/</loc>
+    <lastmod>2026-08-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2026-08-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2026-08-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/work-from-home/</loc>
+    <lastmod>2026-08-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/coffee-table/</loc>
+    <lastmod>2026-08-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/how-we-carved-out-proper-work-chill-zones-in-our-tiny-manche/</loc>
+    <lastmod>2026-08-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/nesting-tables/</loc>
+    <lastmod>2026-08-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/renterfriendly/</loc>
+    <lastmod>2026-08-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/sofa/</loc>
+    <lastmod>2026-08-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/how-we-finally-got-morning-coffee-freedom-on-our-tiny-london/</loc>
+    <lastmod>2026-08-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/how-we-transformed-our-tiny-bristol-backyard-into-a-morning/</loc>
+    <lastmod>2026-08-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/how-we-transformed-our-tiny-london-flats-dining-corner-from/</loc>
+    <lastmod>2026-08-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/how-we-divided-our-tiny-flats-living-room-into-work-chill-zo/</loc>
+    <lastmod>2026-08-25T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/tags/balcony-hacks/</loc>
     <lastmod>2026-08-24T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/budget-decor/</loc>
-    <lastmod>2026-08-24T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>http://localhost:1313/tags/balcony-makeover/</loc>
     <lastmod>2026-08-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/categories/dining-room/</loc>
@@ -32,10 +92,10 @@
     <loc>http://localhost:1313/tags/flat-living/</loc>
     <lastmod>2026-08-24T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/furniturebox/</loc>
+    <loc>http://localhost:1313/tags/home-renovation/</loc>
     <lastmod>2026-08-24T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/home-renovation/</loc>
+    <loc>http://localhost:1313/posts/how-i-finally-got-my-morning-coffee-fix-on-my-shoebox-balcon/</loc>
     <lastmod>2026-08-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/how-we-finally-conquered-our-tiny-balcony-and-got-our-mornin/</loc>
@@ -47,7 +107,7 @@
     <loc>http://localhost:1313/posts/how-we-transformed-our-tiny-flats-dining-corner-without-brea/</loc>
     <lastmod>2026-08-24T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/living-room/</loc>
+    <loc>http://localhost:1313/tags/morning-coffee/</loc>
     <lastmod>2026-08-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/our-small-flats-dining-disaster-how-furniturebox-saved-our-s/</loc>
@@ -59,10 +119,10 @@
     <loc>http://localhost:1313/categories/outdoor-living/</loc>
     <lastmod>2026-08-24T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/patio-ideas/</loc>
+    <loc>http://localhost:1313/categories/outdoor-spaces/</loc>
     <lastmod>2026-08-24T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/</loc>
+    <loc>http://localhost:1313/tags/patio-ideas/</loc>
     <lastmod>2026-08-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/renter-friendly/</loc>
@@ -71,16 +131,7 @@
     <loc>http://localhost:1313/categories/small-spaces/</loc>
     <lastmod>2026-08-24T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/small-spaces/</loc>
-    <lastmod>2026-08-24T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2026-08-24T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/tags/tiny-flat-hacks/</loc>
-    <lastmod>2026-08-24T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/</loc>
     <lastmod>2026-08-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/bistro-set/</loc>
@@ -302,9 +353,6 @@
     <loc>http://localhost:1313/tags/studio-flat/</loc>
     <lastmod>2026-08-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/balcony-makeover/</loc>
-    <lastmod>2026-08-04T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/posts/air-quality-makeover-small-flat-uk/</loc>
     <lastmod>2026-08-04T00:00:00+00:00</lastmod>
   </url><url>
@@ -428,9 +476,6 @@
     <loc>http://localhost:1313/tags/desk-setup/</loc>
     <lastmod>2026-07-24T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/home-office/</loc>
-    <lastmod>2026-07-24T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/categories/home-office-guides/</loc>
     <lastmod>2026-07-24T00:00:00+00:00</lastmod>
   </url><url>
@@ -445,6 +490,15 @@
   </url><url>
     <loc>http://localhost:1313/tags/wfh/</loc>
     <lastmod>2026-07-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/contact/</loc>
+    <lastmod>2026-07-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/privacy-policy/</loc>
+    <lastmod>2026-07-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/about/</loc>
+    <lastmod>2026-07-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/2026-08-15-how-i-finally-stopped-working-from-my-sofa-and-other-tiny-li/</loc>
     <lastmod>2024-05-22T00:00:00+00:00</lastmod>

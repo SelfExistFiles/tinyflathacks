@@ -11,3 +11,25 @@ theme = "clarity"
   	description = "Tiny Flat Hacks – Smart storage and space-saving ideas for small apartments in the UK." # 这是全站默认的 description
 
 copyright = "fasjkljsdlfk"
+
+
+# 顶部主导航菜单配置
+[[menus.main]]
+  name = "Blog"
+  url = "/posts/"
+  weight = 10
+
+[[menus.main]]
+  name = "About"
+  url = "/about/"
+  weight = 20
+
+[[menus.main]]
+  name = "Contact"
+  url = "/contact/"
+  weight = 30
+
+[[menus.main]]
+  name = "Privacy Policy"
+  url = "/privacy-policy/"
+  weight = 40
