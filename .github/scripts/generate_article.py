@@ -191,19 +191,34 @@ def generate_and_save():
     placeholder_thumbnail = "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
     
     prompt = f"""
-Please write a blog post in native British English for tinyflathacks.co.uk.
+You are writing a blog post for tinyflathacks.co.uk. Follow these instructions precisely:
 
+### Task & Context
 **Topic:** {chosen['desc']}
-**Promoted Brand & Products:** Reference Furniturebox.co.uk items ({', '.join(chosen['furniturebox_products'])}), highlighting Next Day Free UK Delivery, budget-friendliness, and space-saving cleverness.
+**Promoted Brand & Products:** Reference Furniturebox.co.uk items ({', '.join(chosen['furniturebox_products'])}), highlighting Next Day Free UK Delivery, budget-friendliness, and space-saving cleverness. Keep praise grounded and reluctant (e.g., "It's actually decent, to be fair"), never sounding like an over-enthusiastic American influencer.
 
-**Tone & Persona (STRICT):**
-1. Write in 1st person ("I" or "we") as a genuine UK renter living in London, Manchester, or Bristol.
-2. Use British English spelling throughout (organise, colour, flat, cosy, bloody, sorted).
-3. Naturally use slang like "proper useful", "a bit of a faff", "honestly", "sorted", "nightmare".
-4. Add witty British self-deprecation about tight staircases, rainy weather, or assembly failures.
-5. NO AI buzzwords (delve, unleash, realm, tapestry, game-changer).
+### Role & Persona
+1. **First-Person Authentic Voice**: Write in the 1st person ("I" or "we") as a genuine, slightly jaded 20s/30s UK renter living in a cramped converted Victorian flat in London (Zone 2/3), a damp red-brick terrace in Manchester, or a steep, hilly street in Bristol. 
+2. **Hyper-Specific Micro-Details**: Ground the story in gritty, lived-in British domestic reality. Reference specific annoyances like:
+   - Narrow, steep staircases with awkward 90-degree turns that make moving furniture feel like an Olympic sport.
+   - Single-glazed sash windows that rattle in the wind, perpetual damp/condensation, and the eternal winter battle against black mould.
+   - Landlord special "magnolia" painted walls, mysterious stains on beige carpets, or an ancient boiler that sounds like a dying tractor.
+   - Drying clothes on an airer in the living room for three days straight because it’s perpetually drizzling outside.
 
-**Structure:**
+### Language & Slang
+3. **Strict British English**: Use UK spelling and terminology exclusively (flat, cosy, bloody, sorted, rubbish, quid, faff, lift, hallway, bin day, hoover, kettle, Argos, B&Q, IKEA).
+4. **Natural Conversational Fillers**: Weave in casual British slang naturally:
+   - *Descriptors*: "proper useful", "absolute nightmare", "a bit of a faff", "dead handy", "bog-standard", "grim", "knackered", "chuffed".
+   - *Transitions & Fillers*: "Honestly...", "To be fair...", "Long story short...", "Mind you...", "Classic...", "Can't complain (well, I will)".
+
+### Tone & Narrative Style
+5. **Dry, Self-Deprecating British Wit**: Use understatement and cynical humour when things go wrong. Laugh at your own misery—such as spending four hours building flat-pack furniture only to realise you put the back panel on backwards, or getting soaked to the bone on a short walk to Tesco Express.
+6. **Imperfect, Human Pacing**: Vary your sentence lengths. Use occasional parentheses for cheeky asides (like this), rhetorical questions, and mild exasperation. 
+
+### Strict Negative Constraints
+7. **ZERO AI Buzzwords & Corporate Fluff**: Strictly ban words like *delve, unleash, realm, tapestry, game-changer, elevate, seamlessly, testament, beacon, navigate, ecosystem, bustling, cozy*. 
+
+### Structure
 1. Front Matter (MUST be wrapped with --- on separate lines, YAML format):
    ---
    title: "How We..."
@@ -215,7 +230,7 @@ Please write a blog post in native British English for tinyflathacks.co.uk.
    draft: false
    ---
 2. Intro & Before: The Cluttered Nightmare (Include markdown image `![Before Makeover]({placeholder_thumbnail})`)
-3. The Fix & Furniturebox Discoveries
+3. The Fix & Furniturebox Discoveries (Mentioning Furniturebox items naturally)
 4. After: How It Changed Our Daily Life
 5. Budget Breakdown & Final Verdict
 
